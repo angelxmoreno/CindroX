@@ -1,10 +1,15 @@
 {
     "name": "cindro-x-framework",
-    "module": "index.ts",
+    "main": "index.ts",
     "type": "module",
     "scripts": {
         "lint": "bun biome check",
-        "lint:fix": "bun biome check --write"
+        "lint:fix": "bun biome check --write",
+        "test": "bun test",
+        "dev": "bun run src/server.ts"
+    },
+    "dependencies": {
+        "typescript": "^5.0.0"
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.4",
@@ -13,7 +18,28 @@
         "@types/bun": "latest",
         "lefthook": "^1.10.10"
     },
-    "peerDependencies": {
-        "typescript": "^5.0.0"
-    }
+    "engines": {
+        "bun": ">=1.0.0"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/angelxmoreno/CindroX.git"
+    },
+    "bugs": {
+        "url": "https://github.com/angelxmoreno/CindroX/issues"
+    },
+    "homepage": "https://github.com/angelxmoreno/CindroX",
+    "maintainers": [
+        {
+            "name": "Angel X Moreno",
+            "email": "angel@moreno.dev"
+        }
+    ],
+    "contributors": [
+        {
+            "name": "Angel X Moreno",
+            "email": "angel@moreno.dev"
+        }
+    ]
 }
