@@ -17,28 +17,35 @@ cd cindrox
 bun install
 ```
 
+### **3️⃣ Set Up Environment Variables**
+Copy the example environment file and modify it as needed:
+```sh
+cp .env.example .env
+```
+Edit `.env` as needed. See the [Environment Variables Guide](docs/environment.md) for more details on each variable.
+
 ---
 
-## 🔧 Core Modules
+## 🛠 Core Modules
 
 | Feature | Module |
 |---------|--------|
-| **HTTP Server & Routing** | Hono |
-| **Database ORM** | Drizzle ORM |
-| **Caching** | KeyvHQ |
-| **Authentication** | Lucia Auth |
-| **Validation & Data Sanitization** | Zod |
-| **Logging** | Pino |
-| **Git Hooks** | Lefthook |
-| **Commit Standardization** | CommitLint + Conventional Commits |
-| **Linting & Formatting** | Biome |
+| **HTTP Server & Routing** | [Hono](https://hono.dev/) |
+| **Database ORM** | [Drizzle ORM](https://orm.drizzle.team/) |
+| **Caching** | [KeyvHQ](https://www.npmjs.com/package/keyv) |
+| **Authentication** | [Lucia Auth](https://lucia-auth.com/) |
+| **Validation & Data Sanitization** | [Zod](https://zod.dev/) |
+| **Logging** | [Pino](https://getpino.io/) |
+| **Git Hooks** | [Lefthook](https://github.com/evilmartians/lefthook) |
+| **Commit Standardization** | [CommitLint](https://commitlint.js.org/) + [Conventional Commits](https://www.conventionalcommits.org/) |
+| **Linting & Formatting** | [Biome](https://biomejs.dev/) |
 | **Testing Framework** | Bun:test (built-in) |
-| **File Uploads** | Multer |
-| **Dependency Injection** | Tsyringe |
-| **Event Manager** | Emittery |
-| **Template Generation** | Plop.js |
-| **Email Sending** | Nodemailer + MailCrab |
-| **CLI & Shell** | Commander.js |
+| **File Uploads** | [Multer](https://github.com/expressjs/multer) |
+| **Dependency Injection** | [Tsyringe](https://github.com/microsoft/tsyringe) |
+| **Event Manager** | [Emittery](https://github.com/sindresorhus/emittery) |
+| **Template Generation** | [Plop.js](https://plopjs.com/) |
+| **Email Sending** | [Nodemailer](https://nodemailer.com/) + [MailCrab](https://github.com/marlonb/mailcrab) |
+| **CLI & Shell** | [Commander.js](https://github.com/tj/commander.js) |
 
 ---
 
@@ -60,12 +67,24 @@ bun run lint:fix   # Fix formatting issues
 bun test
 ```
 
+### **Run with Docker**
+To start the services using Docker:
+```sh
+bun docker:start
+```
+
+To stop all services:
+```sh
+bun docker:stop
+```
+
 ---
 
-## 📖 Documentation
+## 📚 Documentation
 - [Setup Guide](docs/setup.md)
 - [Module Configurations](docs/modules.md)
 - [API Reference](docs/api.md)
+- [Environment Variables Guide](docs/environment.md)
 - [Contributing Guide](docs/contributing.md)
 
 ---

@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  app:
+    image: imbios/bun-node:1.1.18-18.20.2-alpine
+    container_name: ${CONTAINER_PREFIX}_app
+    restart: always
+    command: ["bun", "run", "dev"]
+    environment:
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - redis
+      - mariadb
+      - mailcrab
+    volumes:
+      - ..:/app  # Mount the project directory for live-reloading
+
+  mariadb:
+    image: mariadb:latest
+    container_name: ${CONTAINER_PREFIX}_mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - ./data/mariadb:/var/lib/mysql  # Bind-mount storage
+
+  redis:
+    image: redis:alpine
+    container_name: ${CONTAINER_PREFIX}_redis
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - ./data/redis:/data  # Bind-mount storage
+
+  mailcrab:
+    image: marlonb/mailcrab:latest
+    container_name: ${CONTAINER_PREFIX}_mailcrab
+    restart: always
+    ports:
+      - "${MAILCRAB_UI_PORT}:1080"
+      - "${MAILCRAB_SMTP_PORT}:1025"

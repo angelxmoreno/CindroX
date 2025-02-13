@@ -6,7 +6,10 @@
         "lint": "bun biome check",
         "lint:fix": "bun biome check --write",
         "test": "bun test",
-        "dev": "bun run src/server.ts"
+        "dev": "bun run src/server.ts",
+        "docker": "docker compose --project-name cidro-x --env-file .env -f docker/docker-compose.yml",
+        "docker:start": "bun run docker up -d",
+        "docker:stop": "bun run docker down"
     },
     "dependencies": {
         "typescript": "^5.0.0"
