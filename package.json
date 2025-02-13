@@ -9,7 +9,7 @@
         "dev": "bun run src/server.ts",
         "docker": "docker compose --project-name cidro-x --env-file .env -f docker/docker-compose.yml",
         "docker:start": "bun run docker up -d",
-        "docker:down": "bun run docker down"
+        "docker:stop": "bun run docker down"
     },
     "dependencies": {
         "typescript": "^5.0.0"

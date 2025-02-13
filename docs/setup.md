@@ -1,4 +1,4 @@
-# 📖 CindroX Setup Guide
+# 📚 CindroX Setup Guide
 
 This guide will walk you through setting up **CindroX**, ensuring all dependencies and services are properly configured.
 
@@ -37,7 +37,16 @@ This will install all required dependencies for **CindroX**.
 
 ---
 
-## **4️⃣ Setup Developer Tooling**
+## **4️⃣ Set Up Environment Variables**
+Copy the example environment file and modify it as needed:
+```sh
+cp .env.example .env
+```
+Edit `.env` as needed. See the [Environment Variables Guide](docs/environment.md) for more details on each variable.
+
+---
+
+## **5️⃣ Setup Developer Tooling**
 We use **CommitLint, Lefthook, and Biome** to enforce code standards.
 
 ### **Verify Setup**
@@ -54,17 +63,17 @@ lefthook run pre-commit
 
 ---
 
-## **5️⃣ Setup Infrastructure**
-We use **Docker Compose** to manage infrastructure services like PostgreSQL and MailCrab.
+## **6️⃣ Setup Infrastructure**
+We use **Docker Compose** to manage infrastructure services like MariaDB, Redis, and MailCrab.
 
 ### **Start Services**
 ```sh
-docker compose up -d
+bun docker:start
 ```
 
 ### **Stop Services**
 ```sh
-docker compose down
+bun docker:stop
 ```
 
 Verify running containers:
@@ -74,16 +83,16 @@ docker ps
 
 ---
 
-## **6️⃣ Run the API Server**
+## **7️⃣ Run the API Server**
 ```sh
 bun run src/server.ts
 ```
 
-Once running, visit **`http://localhost:3000`** to check the API.
+Once running, visit **`http://localhost:${SERVER_PORT}`** to check the API.
 
 ---
 
-## **7️⃣ Running Tests**
+## **8️⃣ Running Tests**
 ```sh
 bun test
 ```
