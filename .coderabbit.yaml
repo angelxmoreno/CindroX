@@ -13,6 +13,8 @@ reviews:
   auto_review:
     enabled: true
     drafts: false
+    base_branches:
+      - "integration"
   tools:
     biome:
       enabled: true
