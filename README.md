@@ -85,6 +85,7 @@ bun docker:stop
 - [Module Configurations](docs/modules.md)
 - [API Reference](docs/api.md)
 - [Environment Variables Guide](docs/environment.md)
+- [Usage](docs/usage.md)
 - [Contributing Guide](docs/contributing.md)
 
 ---
