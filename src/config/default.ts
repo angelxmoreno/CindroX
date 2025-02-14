@@ -10,11 +10,11 @@ const defaultConfig = {
         port: Number(Bun.env.MYSQL_PORT ?? 3306),
     },
     logger: {
-        level: Bun.env.NODE_ENV === "production" ? "info" : "debug",
+        level: Bun.env.LOGGER_LEVEL ?? "info",
         transport: {
             targets: [
                 { target: "pino-pretty", options: { colorize: true }, level: "debug" },
-                { target: "pino/file", options: { destination: "./logs/app.log" }, level: "info" },
+                { target: "pino/file", options: { destination: "./logs/info.log" }, level: "info" },
             ],
         },
     },

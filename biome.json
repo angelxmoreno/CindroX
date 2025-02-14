@@ -7,7 +7,7 @@
     },
     "files": {
         "ignoreUnknown": false,
-        "ignore": ["node_modules/", "docker/data/"]
+        "ignore": ["node_modules/", "docker/data/", "coverage/", "coverage-html/"]
     },
     "formatter": {
         "enabled": true,
