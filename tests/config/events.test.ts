@@ -47,8 +47,14 @@ describe("EventManager", () => {
 
     it("should clear all listeners for an event", async () => {
         let count = 0;
-        eventManager.on("clear-event", () => count++);
-        eventManager.on("clear-event", () => count++);
+        eventManager.on("clear-event", () => {
+            count++;
+            return;
+        });
+        eventManager.on("clear-event", () => {
+            count++;
+            return;
+        });
 
         eventManager.clearListeners("clear-event");
         await eventManager.emit("clear-event");
