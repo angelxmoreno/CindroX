@@ -26,6 +26,11 @@ const defaultConfig = {
         port: Number(Bun.env.MYSQL_PORT ?? 3306),
     },
     logger: loggerConfig,
+    mailer: {
+        url: Bun.env.MAIL_URL ?? "smtp://localhost:7025",
+        fromEmail: Bun.env.MAIL_FROM_EMAIL ?? "no-reply@local",
+        fromName: Bun.env.MAIL_FROM_NAME ?? "Admin",
+    },
 } as const;
 
 export type AppConfig = typeof defaultConfig;

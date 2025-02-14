@@ -29,6 +29,7 @@
         "baseUrl": "./src",
         "paths": {
             "@config/*": ["config/*"],
+            "@services/*": ["services/*"],
             "@utils/*": ["utils/*"]
         }
     }
