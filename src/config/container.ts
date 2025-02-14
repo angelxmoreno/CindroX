@@ -4,10 +4,7 @@ import Emittery from "emittery";
 import pino, { type Logger } from "pino";
 import { type DependencyContainer, container } from "tsyringe";
 
-const parentLogger = pino({
-    level: appConfig.logger.level,
-    transport: appConfig.logger.transport,
-});
+const parentLogger = pino(appConfig.logger);
 
 interface AppDependencies {
     Logger: pino.Logger;

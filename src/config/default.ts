@@ -1,7 +1,23 @@
+import type { LoggerOptions, TransportTargetOptions } from "pino";
+
+const pinoLogFileLevel = Bun.env.LOGGER_FILE_LEVEL ?? null;
+const pinoLogFilePath = Bun.env.LOGGER_FILE_PATH ?? null;
+const pinoTargets: TransportTargetOptions[] = [{ target: "pino-pretty", options: { colorize: true }, level: "debug" }];
+if (pinoLogFileLevel && pinoLogFilePath) {
+    pinoTargets.push({ target: "pino/file", options: { destination: pinoLogFilePath }, level: pinoLogFileLevel });
+}
+
+const loggerConfig: LoggerOptions = {
+    level: Bun.env.LOGGER_LEVEL ?? "info",
+    transport: {
+        targets: pinoTargets,
+    },
+};
+
 const defaultConfig = {
     app: {
         name: Bun.env.APP_NAME ?? "sample app",
-        environment: Bun.env.NODE_ENV ?? "development",
+        environment: Bun.env.NODE_ENV ?? "test",
     },
     database: {
         name: Bun.env.MYSQL_DATABASE ?? "dbName",
@@ -9,15 +25,7 @@ const defaultConfig = {
         password: Bun.env.MYSQL_PASSWORD ?? "mysql-password",
         port: Number(Bun.env.MYSQL_PORT ?? 3306),
     },
-    logger: {
-        level: Bun.env.NODE_ENV === "production" ? "info" : "debug",
-        transport: {
-            targets: [
-                { target: "pino-pretty", options: { colorize: true }, level: "debug" },
-                { target: "pino/file", options: { destination: "./logs/app.log" }, level: "info" },
-            ],
-        },
-    },
+    logger: loggerConfig,
 } as const;
 
 export type AppConfig = typeof defaultConfig;

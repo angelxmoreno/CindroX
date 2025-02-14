@@ -9,7 +9,8 @@
         "dev": "bun run src/server.ts",
         "docker": "docker compose --project-name cindro-x --env-file .env -f docker/docker-compose.yml",
         "docker:start": "bun run docker up -d",
-        "docker:stop": "bun run docker down"
+        "docker:stop": "bun run docker down",
+        "test:docker": "docker run --rm -it --env-file .env -v $(pwd):/app -w /app imbios/bun-node:1.1.18-18.20.2-alpine bun test --coverage --reporter=lcov"
     },
     "dependencies": {
         "emittery": "^1.1.0",
