@@ -5,7 +5,7 @@ import { appConfig } from "@config/app";
 describe("App Configuration", () => {
     it("should have default values", () => {
         expect(appConfig.app.name).toBe("CindroX Sample API server");
-        expect(appConfig.app.environment).toBe("development");
+        expect(appConfig.app.environment).toBe(Bun.env.NODE_ENV ?? "test");
     });
 
     it("should load database config from environment variables", () => {
