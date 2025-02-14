@@ -33,6 +33,8 @@
             "@actions/*": ["actions/*"],
             "@commands/*": ["commands/*"],
             "@config/*": ["config/*"],
+            "@services/*": ["services/*"],
+            "@utils/*": ["utils/*"],
             "@db/*": ["db/*"],
             "@middleware/*": ["middleware/*"],
             "@server/*": ["server/*"]

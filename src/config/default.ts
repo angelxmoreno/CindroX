@@ -36,6 +36,11 @@ const defaultConfig = {
         driver: Bun.env.CACHE_DRIVER ?? "memory",
         redisUrl: Bun.env.REDIS_CACHE_URL ?? null,
     },
+    mailer: {
+        url: Bun.env.MAIL_URL ?? "smtp://localhost:7025",
+        fromEmail: Bun.env.MAIL_FROM_EMAIL ?? "no-reply@local",
+        fromName: Bun.env.MAIL_FROM_NAME ?? "Admin",
+    },
 } as const;
 
 export type AppConfig = typeof defaultConfig;
