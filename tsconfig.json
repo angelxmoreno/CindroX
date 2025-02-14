@@ -25,6 +25,11 @@
         "noPropertyAccessFromIndexSignature": false,
 
         // JavaScript Handling (Optional)
-        "allowJs": false
+        "allowJs": false,
+        "baseUrl": "./src",
+        "paths": {
+            "@config/*": ["config/*"],
+            "@utils/*": ["utils/*"]
+        }
     }
 }

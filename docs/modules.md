@@ -27,14 +27,14 @@ CindroX is composed of several core modules that provide a streamlined API devel
 
 ---
 
-## **🔧 Module Configuration**
+## **🛠 Module Configuration**
 Each module can be configured as needed. Refer to their respective configuration files and environment variables:
 
 - **Hono** → `src/server.ts`
 - **Drizzle ORM** → `drizzle.config.ts`
 - **KeyvHQ (Caching)** → `config/cache.ts`
 - **Lucia Auth (Authentication)** → `src/auth.ts`
-- **Pino (Logging)** → `src/logger.ts`
+- **Pino (Logging)** → `src/config/container.ts`
 - **CommitLint & Lefthook** → `.commitlintrc` & `.lefthook.yml`
 - **Biome** → `biome.json`
 - **Multer (File Uploads)** → `src/upload.ts`
