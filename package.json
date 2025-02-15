@@ -13,6 +13,8 @@
         "test:docker": "docker run --rm -it --env-file .env -v $(pwd):/app -w /app imbios/bun-node:1.1.18-18.20.2-alpine bun test --coverage --reporter=lcov"
     },
     "dependencies": {
+        "@keyvhq/core": "^2.1.1",
+        "@keyvhq/redis": "^2.1.5",
         "emittery": "^1.1.0",
         "pino": "^9.6.0",
         "reflect-metadata": "^0.2.2",

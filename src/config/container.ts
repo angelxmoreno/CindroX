@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { appConfig } from "@config/app";
+import { CacheClassModule } from "@config/modules/cache";
 import Emittery from "emittery";
 import pino, { type Logger } from "pino";
 import { type DependencyContainer, container } from "tsyringe";
@@ -9,6 +10,7 @@ const parentLogger = pino(appConfig.logger);
 interface AppDependencies {
     Logger: pino.Logger;
     EventManager: Emittery;
+    Cache: CacheClassModule;
 }
 
 const childContainer: DependencyContainer = container.createChildContainer();
@@ -19,6 +21,10 @@ childContainer.register("EventManager", {
 
 childContainer.register<Logger>("Logger", {
     useValue: parentLogger,
+});
+
+childContainer.register<CacheClassModule>("Cache", {
+    useClass: CacheClassModule,
 });
 
 class AppContainer {

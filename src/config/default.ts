@@ -26,6 +26,10 @@ const defaultConfig = {
         port: Number(Bun.env.MYSQL_PORT ?? 3306),
     },
     logger: loggerConfig,
+    cache: {
+        driver: Bun.env.CACHE_DRIVER ?? "memory",
+        redisUrl: Bun.env.REDIS_CACHE_URL ?? null,
+    },
 } as const;
 
 export type AppConfig = typeof defaultConfig;
