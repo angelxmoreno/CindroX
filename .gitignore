@@ -2,7 +2,8 @@
 
 # Logs
 
-logs
+logs/*
+!logs/.gitkeep
 _.log
 npm-debug.log_
 yarn-debug.log*
