@@ -18,6 +18,7 @@
         "test:docker": "docker run --rm -it --env-file .env -v $(pwd):/app -w /app imbios/bun-node:1.1.18-18.20.2-alpine bun test --coverage --reporter=lcov"
     },
     "dependencies": {
+        "axios": "^1.7.9",
         "@inquirer/prompts": "^7.3.2",
         "@keyvhq/core": "^2.1.1",
         "@keyvhq/redis": "^2.1.5",
