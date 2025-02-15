@@ -1,5 +1,7 @@
 import "reflect-metadata";
+import type { ActionInterface } from "@actions/ActionInterface";
 import { appConfig } from "@config/app";
+import actionMap from "@config/modules/actionMap";
 import { CacheClassModule } from "@config/modules/cache";
 import Emittery from "emittery";
 import pino, { type Logger } from "pino";
@@ -13,25 +15,37 @@ interface AppDependencies {
     Cache: CacheClassModule;
 }
 
-const childContainer: DependencyContainer = container.createChildContainer();
+const baseContainer: DependencyContainer = container.createChildContainer();
+const actionContainer: DependencyContainer = baseContainer.createChildContainer();
 
-childContainer.register("EventManager", {
+baseContainer.register("EventManager", {
     useValue: new Emittery(),
 });
 
-childContainer.register<Logger>("Logger", {
+baseContainer.register<Logger>("Logger", {
     useValue: parentLogger,
 });
 
-childContainer.register<CacheClassModule>("Cache", {
+baseContainer.register<CacheClassModule>("Cache", {
     useClass: CacheClassModule,
 });
 
+actionMap.forEach((actionClass, name) => {
+    actionContainer.register(name, {
+        useClass: actionClass,
+    });
+});
+
 class AppContainer {
-    private static container = childContainer;
+    private static container = baseContainer;
+    private static actions = actionContainer;
 
     static resolve<T extends keyof AppDependencies>(key: T): AppDependencies[T] {
         return this.container.resolve<AppDependencies[T]>(key);
+    }
+
+    static resolveAction<T extends ActionInterface>(actionKey: string): T | undefined {
+        return this.actions.isRegistered(actionKey) ? this.actions.resolve<T>(actionKey) : undefined;
     }
 
     static createChildLogger(moduleName: string) {
