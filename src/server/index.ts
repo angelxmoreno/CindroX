@@ -6,7 +6,7 @@ import { routingMiddleware } from "@middleware/routingMiddleware";
 import { Hono } from "hono";
 
 const server = new Hono();
-const logger = AppContainer.createChildLogger("Server");
+const logger = AppContainer.getLogger("App");
 
 // Register Middleware
 server.use("*", loggerMiddleware);
@@ -20,11 +20,13 @@ server.onError(errorMiddleware);
 const serverConfig = {
     port: appConfig.app.port,
     fetch: server.fetch,
+    request: server.request,
 };
 
 // Log after server starts
-Promise.resolve().then(() => {
+(async () => {
+    await Bun.sleep(1); // Small delay to ensure Bun picks up the server
     logger.info(`✅ HTTP Server started on port ${serverConfig.port}`);
-});
+})();
 
 export default serverConfig;

@@ -1,11 +1,12 @@
 import type { ActionInterface } from "@actions/ActionInterface";
+import { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import type { CacheClassModule } from "@config/modules/cache";
 import type Emittery from "emittery";
-import type pino from "pino";
+import type { Logger } from "pino";
 import type { DependencyContainer } from "tsyringe";
 
 interface AppDependencies {
-    Logger: pino.Logger;
+    Logger: Logger;
     EventManager: Emittery;
     Cache: CacheClassModule;
 }
@@ -13,12 +14,12 @@ interface AppDependencies {
 class AppContainerModuleClass {
     private baseContainer: DependencyContainer;
     private actionsContainer: DependencyContainer;
-    private logger: pino.Logger;
+    private loggerRegistry: LoggerRegistry;
 
-    constructor(baseContainer: DependencyContainer, actionsContainer: DependencyContainer, logger: pino.Logger) {
+    constructor(baseContainer: DependencyContainer, actionsContainer: DependencyContainer, logger: Logger) {
         this.baseContainer = baseContainer;
         this.actionsContainer = actionsContainer;
-        this.logger = logger;
+        this.loggerRegistry = new LoggerRegistry(logger);
     }
 
     resolve<T extends keyof AppDependencies>(key: T): AppDependencies[T] {
@@ -29,8 +30,8 @@ class AppContainerModuleClass {
         return this.actionsContainer.isRegistered(actionKey) ? this.actionsContainer.resolve<T>(actionKey) : undefined;
     }
 
-    createChildLogger(moduleName: string) {
-        return this.logger.child({ name: moduleName });
+    getLogger(moduleName: string): Logger {
+        return this.loggerRegistry.getLogger(moduleName);
     }
 }
 

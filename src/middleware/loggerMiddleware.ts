@@ -1,7 +1,7 @@
 import AppContainer from "@config/container";
 import type { Context } from "hono";
 
-const logger = AppContainer.createChildLogger("RequestLogger");
+const logger = AppContainer.getLogger("RequestLogger");
 
 export async function loggerMiddleware(c: Context, next: () => Promise<void>) {
     const { method, path } = c.req;

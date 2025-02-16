@@ -2,9 +2,9 @@ import AppContainer from "@config/container";
 import type { ErrorHandler } from "hono";
 import { HTTPException } from "hono/http-exception";
 
-const logger = AppContainer.createChildLogger("ErrorMiddleware");
+const logger = AppContainer.getLogger("ErrorMiddleware");
 
-export const errorMiddleware: ErrorHandler = (err) => {
+export const errorMiddleware: ErrorHandler = (err): Response => {
     if (err instanceof HTTPException) {
         logger.error(err.name);
         return err.getResponse();

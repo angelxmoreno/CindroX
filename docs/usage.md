@@ -55,7 +55,7 @@ Define event listeners in `src/config/events.ts`:
 import AppContainer from "@config/container";
 
 const eventManager = AppContainer.resolve("EventManager");
-const logger = AppContainer.createChildLogger("Events");
+const logger = AppContainer.getLogger("Events");
 
 // Register an event listener
 eventManager.on("user-registered", (data) => {
@@ -95,7 +95,7 @@ Child loggers help scope logs to different modules:
 ```ts
 import AppContainer from "@config/container";
 
-const authLogger = AppContainer.createChildLogger("AuthService");
+const authLogger = AppContainer.getLogger("AuthService");
 authLogger.info("Authentication successful");
 ```
 

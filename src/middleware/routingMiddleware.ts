@@ -2,7 +2,7 @@ import AppContainer from "@config/container";
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 
-const logger = AppContainer.createChildLogger("Router");
+const logger = AppContainer.getLogger("Router");
 
 export async function routingMiddleware(c: Context) {
     const method = c.req.method.toUpperCase();
