@@ -18,6 +18,7 @@ const defaultConfig = {
     app: {
         name: Bun.env.APP_NAME ?? "sample app",
         environment: Bun.env.NODE_ENV ?? "test",
+        port: Number(Bun.env.SERVER_PORT ?? 3001),
     },
     database: {
         name: Bun.env.MYSQL_DATABASE ?? "dbName",

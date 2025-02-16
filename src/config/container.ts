@@ -1,5 +1,7 @@
 import "reflect-metadata";
 import { appConfig } from "@config/app";
+import AppContainerModuleClass from "@config/modules/AppContainerModuleClass";
+import actionMap from "@config/modules/actionMap";
 import { CacheClassModule } from "@config/modules/cache";
 import Emittery from "emittery";
 import pino, { type Logger } from "pino";
@@ -7,36 +9,25 @@ import { type DependencyContainer, container } from "tsyringe";
 
 const parentLogger = pino(appConfig.logger);
 
-interface AppDependencies {
-    Logger: pino.Logger;
-    EventManager: Emittery;
-    Cache: CacheClassModule;
-}
+const baseContainer: DependencyContainer = container.createChildContainer();
+const actionsContainer: DependencyContainer = baseContainer.createChildContainer();
 
-const childContainer: DependencyContainer = container.createChildContainer();
-
-childContainer.register("EventManager", {
+baseContainer.register("EventManager", {
     useValue: new Emittery(),
 });
 
-childContainer.register<Logger>("Logger", {
+baseContainer.register<Logger>("Logger", {
     useValue: parentLogger,
 });
 
-childContainer.register<CacheClassModule>("Cache", {
+baseContainer.register<CacheClassModule>("Cache", {
     useClass: CacheClassModule,
 });
 
-class AppContainer {
-    private static container = childContainer;
-
-    static resolve<T extends keyof AppDependencies>(key: T): AppDependencies[T] {
-        return this.container.resolve<AppDependencies[T]>(key);
-    }
-
-    static createChildLogger(moduleName: string) {
-        return parentLogger.child({ name: moduleName });
-    }
+for (const [actionName, actionClass] of actionMap.entries()) {
+    actionsContainer.register(actionName, { useClass: actionClass });
 }
+
+const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer, parentLogger);
 
 export default AppContainer;

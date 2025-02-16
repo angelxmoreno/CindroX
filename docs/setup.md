@@ -85,7 +85,7 @@ docker ps
 
 ## **7️⃣ Run the API Server**
 ```sh
-bun run src/server.ts
+bun run src/server/index.ts
 ```
 
 Once running, visit **`http://localhost:${SERVER_PORT}`** to check the API.
@@ -95,6 +95,99 @@ Once running, visit **`http://localhost:${SERVER_PORT}`** to check the API.
 ## **8️⃣ Running Tests**
 ```sh
 bun test
+```
+
+---
+
+## **9️⃣ Working with Events**
+CindroX uses **Emittery** for event-driven functionality.
+
+### **Adding a New Event Listener**
+1. Open `src/config/events.ts`.
+2. Register a new event:
+   ```ts
+   eventManager.on("user-registered", (data) => {
+       logger.info(`New user registered: ${JSON.stringify(data)}`);
+   });
+   ```
+3. Emit the event anywhere in your code:
+   ```ts
+   eventManager.emit("user-registered", { userId: 123 });
+   ```
+
+---
+
+## **🔟 Logging with Pino**
+CindroX uses **Pino** for structured logging.
+
+### **Creating & Accessing Loggers**
+To create a logger for a module:
+```ts
+const logger = AppContainer.getLogger("ModuleName");
+logger.info("This is a log message");
+```
+
+---
+
+## **1️⃣1️⃣ Adding Routes via Actions**
+CindroX follows an **Action-based routing system**.
+
+### **Adding a New Action**
+1. Create a new file inside `src/actions` (e.g., `src/actions/users/createAction.ts`).
+2. Implement the Action:
+   ```ts
+   import { type Context } from "hono";
+   import type { ActionInterface } from "@actions/ActionInterface";
+   import AppContainer from "@config/container";
+   
+   export class CreateUserAction implements ActionInterface {
+       private logger = AppContainer.getLogger("CreateUserAction");
+   
+       async handle(c: Context) {
+           this.logger.info("Handling user creation");
+           return c.json({ message: "User created!" });
+       }
+   }
+   ```
+3. Register the action in `actionsMap.ts`:
+   ```ts
+   import { CreateUserAction } from "@actions/users/createAction";
+   
+   actions.set("POST:/users", CreateUserAction);
+   ```
+
+---
+
+## **1️⃣2️⃣ Creating a Middleware**
+To create a new middleware:
+1. Add a new file inside `src/middleware` (e.g., `authMiddleware.ts`).
+2. Implement the middleware:
+   ```ts
+   import { type Context, type Next } from "hono";
+   export async function authMiddleware(c: Context, next: Next) {
+       const authHeader = c.req.header("Authorization");
+       if (!authHeader) {
+           return c.text("Unauthorized", 401);
+       }
+       await next();
+   }
+   ```
+3. Register it in `server/index.ts`:
+   ```ts
+   server.use("*", authMiddleware);
+   ```
+
+---
+
+## **1️⃣3️⃣ Accessing the Cache**
+CindroX supports **KeyvHQ** for caching.
+
+### **Using the Cache**
+```ts
+const cache = AppContainer.resolve("Cache");
+await cache.set("key", "value", 10000);
+const value = await cache.get("key");
+console.log(value); // "value"
 ```
 
 ---

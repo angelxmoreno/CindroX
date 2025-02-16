@@ -123,6 +123,79 @@ GET /api/health
 
 ---
 
+## **4️⃣ Event Management**
+### **🔹 Add a New Event Listener**
+Event listeners are added in `config/events.ts`.
+
+Example:
+```ts
+import AppContainer from "@config/container";
+const eventManager = AppContainer.resolve("EventManager");
+
+eventManager.on("user-registered", (data) => {
+  console.log("New user registered:", data);
+});
+```
+
+---
+
+## **5️⃣ Logging**
+### **🔹 Create and Access Loggers**
+Loggers are created using the `LoggerRegistry` and accessed through `AppContainer`.
+
+Example:
+```ts
+const logger = AppContainer.getLogger("UserService");
+logger.info("User created successfully");
+```
+
+---
+
+## **6️⃣ Routing**
+### **🔹 Adding New Routes with Actions**
+Routes are mapped to actions in `config/modules/actionMap.ts`.
+
+Example:
+```ts
+import { IndexAction as UserIndexAction } from "@actions/user/indexAction";
+
+export const actions = [
+  { path: "/user", method: "GET", action: UserIndexAction }
+];
+```
+
+---
+
+## **7️⃣ Middleware**
+### **🔹 Creating New Middleware**
+Middleware functions are stored in `src/middleware/`.
+
+Example:
+```ts
+import type { Context, Next } from "hono";
+
+export async function exampleMiddleware(c: Context, next: Next) {
+  console.log("Middleware executed");
+  await next();
+}
+```
+
+---
+
+## **8️⃣ Caching**
+### **🔹 Accessing the Cache**
+The cache is accessible via `AppContainer`.
+
+Example:
+```ts
+const cache = AppContainer.resolve("Cache");
+await cache.set("user:123", { name: "John Doe" }, 3600);
+const user = await cache.get("user:123");
+console.log(user);
+```
+
+---
+
 ## **📌 Notes**
 - **Authentication** is required for most endpoints.
 - All requests and responses use **JSON format**.
