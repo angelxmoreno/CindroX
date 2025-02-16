@@ -11,7 +11,7 @@ describe("AppContainer (Dependency Injection)", () => {
     });
 
     it("should create a child logger with the correct name", () => {
-        const childLogger = AppContainer.createChildLogger("TestModule");
+        const childLogger = AppContainer.getLogger("TestModule");
         expect(childLogger).toBeDefined();
         expect(typeof childLogger.info).toBe("function");
         expect(childLogger.bindings().name).toBe("TestModule");

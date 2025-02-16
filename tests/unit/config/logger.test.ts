@@ -29,7 +29,7 @@ describe("Logger (Pino)", () => {
     });
 
     it("should create a child logger with the correct name", () => {
-        const childLogger = AppContainer.createChildLogger("TestModule");
+        const childLogger = AppContainer.getLogger("TestModule");
 
         expect(childLogger).toBeDefined();
         expect(childLogger.bindings().name).toBe("TestModule");
@@ -37,7 +37,7 @@ describe("Logger (Pino)", () => {
 
     it("should respect log levels", () => {
         const envLOGGER_LEVEL = Bun.env.LOGGER_LEVEL ?? "info";
-        const configLoggerLevel = appConfig.logger.level;
+        const configLoggerLevel = String(appConfig.logger.level);
 
         expect(logger.level).toBe(envLOGGER_LEVEL);
         expect(logger.level).toBe(configLoggerLevel);
