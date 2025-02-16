@@ -14,6 +14,7 @@ CindroX is composed of several core modules that provide a streamlined API devel
 | **Authentication** | [Lucia Auth](https://lucia-auth.com/) | Secure authentication system supporting sessions and tokens. |
 | **Validation & Data Sanitization** | [Zod](https://zod.dev/) | Schema-based validation and type safety enforcement. |
 | **Logging** | [Pino](https://getpino.io/) | Fast, structured JSON logging for performance monitoring. |
+| **Logger Management** | LoggerRegistry | Centralized logger registry to manage named loggers efficiently. |
 | **Git Hooks** | [Lefthook](https://github.com/evilmartians/lefthook) | Efficient Git hook manager for pre-commit and pre-push validations. |
 | **Commit Standardization** | [CommitLint](https://commitlint.js.org/) + [Conventional Commits](https://www.conventionalcommits.org/) | Enforces standardized commit messages following Conventional Commits. |
 | **Linting & Formatting** | [Biome](https://biomejs.dev/) | Rust-powered replacement for ESLint & Prettier, enforcing code style consistency. |
@@ -21,6 +22,7 @@ CindroX is composed of several core modules that provide a streamlined API devel
 | **File Uploads** | [Multer](https://www.npmjs.com/package/multer) | Middleware for handling multipart file uploads. |
 | **Dependency Injection** | [Tsyringe](https://www.npmjs.com/package/tsyringe) | Lightweight DI container for better modularity and testing. |
 | **Event Manager** | [Emittery](https://www.npmjs.com/package/emittery) | Asynchronous, event-driven system for internal messaging. |
+| **Action-Based Routing** | ActionMap | Automatically maps incoming requests to action classes. |
 | **Template Generation** | [Plop.js](https://plopjs.com/) | CLI tool for scaffolding controllers and other components. |
 | **Email Sending** | [Nodemailer](https://nodemailer.com/) + [MailCrab](https://github.com/tomMoulard/mailcrab) | Handles SMTP-based email sending, with MailCrab for local email capture. |
 | **CLI & Shell** | [Commander.js](https://www.npmjs.com/package/commander) | A simple yet powerful command-line interface framework. |
@@ -30,15 +32,16 @@ CindroX is composed of several core modules that provide a streamlined API devel
 ## **🛠 Module Configuration**
 Each module can be configured as needed. Refer to their respective configuration files and environment variables:
 
-- **Hono** → `src/server.ts`
+- **Hono** → `src/server/index.ts`
 - **Drizzle ORM** → `drizzle.config.ts`
-- **KeyvHQ (Caching)** → `config/cache.ts`
+- **KeyvHQ (Caching)** → `src/config/modules/cache.ts`
 - **Lucia Auth (Authentication)** → `src/auth.ts`
-- **Pino (Logging)** → `src/config/container.ts`
+- **Pino (Logging)** → `src/config/modules/loggerRegistry.ts`
 - **CommitLint & Lefthook** → `.commitlintrc` & `.lefthook.yml`
 - **Biome** → `biome.json`
 - **Multer (File Uploads)** → `src/upload.ts`
 - **Emittery (Events)** → `src/events.ts`
+- **Action-Based Routing** → `src/config/modules/actionMap.ts`
 - **Plop.js (Templates)** → `plopfile.ts`
 - **Nodemailer (Email)** → `src/mailer.ts`
 - **Commander.js (CLI)** → `src/cli.ts`
