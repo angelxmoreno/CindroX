@@ -9,6 +9,6 @@ export class IndexAction implements ActionInterface {
 
     async handle(c: Context): Promise<Response> {
         this.logger.info("Health check accessed");
-        return c.json({ status: "ok" });
+        return c.json({ status: "ok", timestamp: Date.now() });
     }
 }
