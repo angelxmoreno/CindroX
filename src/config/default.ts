@@ -1,4 +1,8 @@
+import type { DatabaseConfig } from "@config/modules/DrizzleModuleClass";
 import type { LoggerOptions, TransportTargetOptions } from "pino";
+
+const nodeEnv = Bun.env.NODE_ENV ?? "test";
+const isTestEnv = nodeEnv === "test";
 
 const pinoLogFileLevel = Bun.env.LOGGER_FILE_LEVEL ?? null;
 const pinoLogFilePath = Bun.env.LOGGER_FILE_PATH ?? null;
@@ -14,18 +18,17 @@ const loggerConfig: LoggerOptions = {
     },
 };
 
+const databaseConfig: DatabaseConfig = {
+    url: (isTestEnv ? Bun.env.TEST_DATABASE_URL : Bun.env.DATABASE_URL) ?? "mysql://localhost/test",
+};
+
 const defaultConfig = {
     app: {
         name: Bun.env.APP_NAME ?? "sample app",
-        environment: Bun.env.NODE_ENV ?? "test",
+        environment: nodeEnv,
         port: Number(Bun.env.SERVER_PORT ?? 3001),
     },
-    database: {
-        name: Bun.env.MYSQL_DATABASE ?? "dbName",
-        user: Bun.env.MYSQL_USER ?? "mysql-user",
-        password: Bun.env.MYSQL_PASSWORD ?? "mysql-password",
-        port: Number(Bun.env.MYSQL_PORT ?? 3306),
-    },
+    database: databaseConfig,
     logger: loggerConfig,
     cache: {
         driver: Bun.env.CACHE_DRIVER ?? "memory",
