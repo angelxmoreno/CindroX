@@ -31,6 +31,20 @@ services:
     volumes:
       - ./data/mariadb:/var/lib/mysql  # Bind-mount storage
 
+  mariadb_test:
+    image: mariadb:latest
+    container_name: ${CONTAINER_PREFIX}_mariadb_test
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_TEST_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_TEST_DATABASE}
+      MYSQL_USER: ${MYSQL_TEST_USER}
+      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWORD}
+    ports:
+      - "${MYSQL_TEST_PORT}:3306"
+    volumes:
+      - ./data/mariadb_test:/var/lib/mysql  # Bind-mount storage
+
   redis:
     image: redis:alpine
     container_name: ${CONTAINER_PREFIX}_redis
