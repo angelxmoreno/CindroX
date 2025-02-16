@@ -1,5 +1,5 @@
 import type { ActionInterface } from "@actions/ActionInterface";
-import { LoggerRegistry } from "@config/modules/LoggerRegistry";
+import type { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import type { CacheClassModule } from "@config/modules/cache";
 import type Emittery from "emittery";
 import type { Logger } from "pino";
@@ -16,10 +16,14 @@ class AppContainerModuleClass {
     private actionsContainer: DependencyContainer;
     private loggerRegistry: LoggerRegistry;
 
-    constructor(baseContainer: DependencyContainer, actionsContainer: DependencyContainer, logger: Logger) {
+    constructor(
+        baseContainer: DependencyContainer,
+        actionsContainer: DependencyContainer,
+        loggerRegistry: LoggerRegistry,
+    ) {
         this.baseContainer = baseContainer;
         this.actionsContainer = actionsContainer;
-        this.loggerRegistry = new LoggerRegistry(logger);
+        this.loggerRegistry = loggerRegistry;
     }
 
     resolve<T extends keyof AppDependencies>(key: T): AppDependencies[T] {

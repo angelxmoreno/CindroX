@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { appConfig } from "@config/app";
 import AppContainerModuleClass from "@config/modules/AppContainerModuleClass";
+import { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import actionMap from "@config/modules/actionMap";
 import { CacheClassModule } from "@config/modules/cache";
 import Emittery from "emittery";
@@ -9,6 +10,7 @@ import { type DependencyContainer, container } from "tsyringe";
 
 const parentLogger = pino(appConfig.logger);
 
+const loggerRegistry = new LoggerRegistry(parentLogger);
 const baseContainer: DependencyContainer = container.createChildContainer();
 const actionsContainer: DependencyContainer = baseContainer.createChildContainer();
 
@@ -28,6 +30,6 @@ for (const [actionName, actionClass] of actionMap.entries()) {
     actionsContainer.register(actionName, { useClass: actionClass });
 }
 
-const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer, parentLogger);
+const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer, loggerRegistry);
 
 export default AppContainer;
