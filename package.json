@@ -7,6 +7,7 @@
         "lint:fix": "bun biome check --write",
         "test": "bun test",
         "dev": "bun --watch run src/server/index.ts",
+        "migrations:generate": "bunx drizzle-kit generate --dialect mysql --schema ./src/db/schema --out ./src/db/migrations",
         "docker": "docker compose --project-name cindro-x --env-file .env -f docker/docker-compose.yml",
         "docker:start": "bun run docker up -d",
         "docker:stop": "bun run docker down",
@@ -15,8 +16,10 @@
     "dependencies": {
         "@keyvhq/core": "^2.1.1",
         "@keyvhq/redis": "^2.1.5",
+        "drizzle-orm": "^0.39.3",
         "emittery": "^1.1.0",
         "hono": "^4.7.1",
+        "mysql2": "^3.12.0",
         "pino": "^9.6.0",
         "reflect-metadata": "^0.2.2",
         "tsyringe": "^4.8.0",
@@ -27,6 +30,7 @@
         "@commitlint/cli": "^19.7.1",
         "@commitlint/config-conventional": "^19.7.1",
         "@types/bun": "latest",
+        "drizzle-kit": "^0.30.4",
         "lefthook": "^1.10.10",
         "pino-pretty": "^13.0.0"
     },
