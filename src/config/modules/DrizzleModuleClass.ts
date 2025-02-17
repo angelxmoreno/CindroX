@@ -1,7 +1,6 @@
+import * as path from "node:path";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import { drizzle } from "drizzle-orm/mysql2";
-
-import * as path from "node:path";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import type { Logger } from "pino";
 
@@ -21,16 +20,27 @@ export class DrizzleModuleClass {
 
     constructor(config: DatabaseConfig, logger: Logger) {
         this.config = config;
-        this.database = drizzle(this.config.url);
         this.logger = logger;
+        this.database = drizzle(this.config.url, {
+            logger: {
+                logQuery: (query: string, params: unknown[]) => {
+                    if (params && params.length > 0) {
+                        this.logger.info(params, query);
+                    } else {
+                        this.logger.info(query);
+                    }
+                },
+            },
+        });
 
         this.drizzleKitConfiguration = {
             dialect: "mysql",
             out: path.join(dbPath, "migrations"),
             schema: path.join(dbPath, "schemas"),
+            dbCredentials: {
+                url: this.config.url,
+            },
         };
-
-        this.logger.debug(this.drizzleKitConfiguration, "Inferred config");
     }
 
     get db(): MySql2Database {
