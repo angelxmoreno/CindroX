@@ -25,9 +25,9 @@ export class DrizzleModuleClass {
             logger: {
                 logQuery: (query: string, params: unknown[]) => {
                     if (params && params.length > 0) {
-                        this.logger.info(params, query);
+                        this.logger.debug(params, query);
                     } else {
-                        this.logger.info(query);
+                        this.logger.debug(query);
                     }
                 },
             },

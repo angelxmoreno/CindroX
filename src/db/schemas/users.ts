@@ -9,5 +9,6 @@ export const usersTable = mysqlTable("users", {
     modified: timestamp("modified_at").defaultNow().onUpdateNow(),
 });
 
+export type UsersTable = typeof usersTable;
 export type SelectUser = typeof usersTable.$inferSelect;
 export type InsertUser = typeof usersTable.$inferInsert;
