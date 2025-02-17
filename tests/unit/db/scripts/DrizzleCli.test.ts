@@ -1,5 +1,5 @@
 // tests/unit/db/scripts/DrizzleCli.test.ts
-import { expect, spyOn, test } from "bun:test";
+import { expect, mock, spyOn, test } from "bun:test";
 import * as childProcess from "node:child_process";
 import { DrizzleCli } from "@db/scripts/DrizzleCli";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
@@ -22,9 +22,10 @@ const dummyConfig: DrizzleKitConfig = {
 
 // Dummy logger with stubbed methods.
 const dummyLogger = {
-    info: () => {},
-    warn: () => {},
-    error: () => {},
+    info: mock(),
+    warn: mock(),
+    error: mock(),
+    debug: mock(),
 } as unknown as Logger;
 
 test("DrizzleCli.migrationsGenerateCommand builds and executes the correct command", async () => {

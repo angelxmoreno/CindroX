@@ -11,10 +11,15 @@ describe("UserModel Integration Tests", () => {
 
     beforeAll(async () => {
         // Migrate the test database to the latest production schema.
-        const cli = new DrizzleCli();
-        await cli.migrationsMigrateCommand();
-        db = AppContainer.resolve("db");
-        usersModel = AppContainer.resolve("UsersModel");
+        try {
+            const cli = new DrizzleCli();
+            await cli.migrationsMigrateCommand();
+            db = AppContainer.resolve("db");
+            usersModel = AppContainer.resolve("UsersModel");
+        } catch (error) {
+            console.error("Test setup failed:", error);
+            throw error;
+        }
     });
 
     afterAll(async () => {
