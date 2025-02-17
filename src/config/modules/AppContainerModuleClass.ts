@@ -1,6 +1,10 @@
 import type { ActionInterface } from "@actions/ActionInterface";
-import { LoggerRegistry } from "@config/modules/LoggerRegistry";
+import type { DrizzleModuleClass } from "@config/modules/DrizzleModuleClass";
+import type { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import type { CacheClassModule } from "@config/modules/cache";
+import type UsersModel from "@db/models/UsersModel";
+import type { Config as DrizzleKitConfig } from "drizzle-kit";
+import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import type Emittery from "emittery";
 import type { Logger } from "pino";
 import type { DependencyContainer } from "tsyringe";
@@ -9,6 +13,10 @@ interface AppDependencies {
     Logger: Logger;
     EventManager: Emittery;
     Cache: CacheClassModule;
+    DrizzleModule: DrizzleModuleClass;
+    db: MySql2Database;
+    drizzleKitConfig: DrizzleKitConfig;
+    UsersModel: UsersModel;
 }
 
 class AppContainerModuleClass {
@@ -16,10 +24,14 @@ class AppContainerModuleClass {
     private actionsContainer: DependencyContainer;
     private loggerRegistry: LoggerRegistry;
 
-    constructor(baseContainer: DependencyContainer, actionsContainer: DependencyContainer, logger: Logger) {
+    constructor(
+        baseContainer: DependencyContainer,
+        actionsContainer: DependencyContainer,
+        loggerRegistry: LoggerRegistry,
+    ) {
         this.baseContainer = baseContainer;
         this.actionsContainer = actionsContainer;
-        this.loggerRegistry = new LoggerRegistry(logger);
+        this.loggerRegistry = loggerRegistry;
     }
 
     resolve<T extends keyof AppDependencies>(key: T): AppDependencies[T] {

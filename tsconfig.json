@@ -31,6 +31,7 @@
         "baseUrl": "./src",
         "paths": {
             "@actions/*": ["actions/*"],
+            "@db/*": ["db/*"],
             "@config/*": ["config/*"],
             "@middleware/*": ["middleware/*"],
             "@server/*": ["server/*"]

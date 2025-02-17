@@ -13,6 +13,16 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
@@ -25,10 +35,20 @@ jobs:
       - name: 📦 Install Dependencies
         run: bun install
 
+      - name: Wait for MySQL
+        run: |
+          until mysql --host=127.0.0.1 --user=root --password=password --database=test_db -e "SELECT 1" ; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 3
+          done
+
       - name: 🎯 Run Linting (Biome)
         run: bun run lint
 
       - name: 🧪 Run Tests with Coverage
+        env:
+          TEST_DATABASE_URL: "mysql://root:password@127.0.0.1:3306/test_db?charset=utf8mb4"
+          NODE_ENV: test
         run: bun test --coverage --reporter=lcov
 
       - name: 📄 Upload Coverage to Codecov
