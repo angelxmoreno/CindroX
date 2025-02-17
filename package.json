@@ -3,6 +3,7 @@
     "main": "index.ts",
     "type": "module",
     "scripts": {
+        "cindrox": "bun src/cli.ts",
         "lint": "bun biome check",
         "lint:fix": "bun biome check --write",
         "test": "bun test",
@@ -17,12 +18,16 @@
         "test:docker": "docker run --rm -it --env-file .env -v $(pwd):/app -w /app imbios/bun-node:1.1.18-18.20.2-alpine bun test --coverage --reporter=lcov"
     },
     "dependencies": {
+        "@inquirer/prompts": "^7.3.2",
         "@keyvhq/core": "^2.1.1",
         "@keyvhq/redis": "^2.1.5",
+        "chalk": "^5.4.1",
+        "commander": "^13.1.0",
         "drizzle-orm": "^0.39.3",
         "emittery": "^1.1.0",
         "hono": "^4.7.1",
         "mysql2": "^3.12.0",
+        "ora": "^8.2.0",
         "pino": "^9.6.0",
         "reflect-metadata": "^0.2.2",
         "tsyringe": "^4.8.0",
