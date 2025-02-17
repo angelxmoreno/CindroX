@@ -20,6 +20,8 @@ const loggerConfig: LoggerOptions = {
 
 const databaseConfig: DatabaseConfig = {
     url: (isTestEnv ? Bun.env.TEST_DATABASE_URL : Bun.env.DATABASE_URL) ?? "mysql://localhost/test",
+    collation: Bun.env.DATABASE_COLLATION ?? "utf8mb4_unicode_ci",
+    timezone: Bun.env.DATABASE_TIMEZONE ?? "UTC",
 };
 
 const defaultConfig = {

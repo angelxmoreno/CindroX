@@ -7,6 +7,8 @@ import type { Logger } from "pino";
 
 export type DatabaseConfig = {
     url: string;
+    collation: string;
+    timezone: string;
 };
 
 const dbPath = path.join(__dirname, "..", "..", "db");
