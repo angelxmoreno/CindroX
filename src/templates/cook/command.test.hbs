@@ -1,0 +1,33 @@
+import { describe, test, expect, beforeEach } from "bun:test";
+import { {{properCase name}}Command } from "@commands/{{properCase name}}Command";
+import { CommandTestHelper } from "@test-helpers/CommandTestHelper";
+
+/**
+* Test suite for {{properCase name}}Command.
+*/
+describe("{{properCase name}}Command", () => {
+let helper: CommandTestHelper;
+
+beforeEach(() => {
+// Initialize a new helper instance before each test.
+helper = new CommandTestHelper();
+});
+
+test("should execute command successfully", async () => {
+const command = new {{properCase name}}Command();
+
+// Override spinner to capture output using the CommandTestHelper.
+helper.overrideSpinner(command);
+
+// Optionally override any prompt methods if needed:
+// spyOn(command, "promptInput").mockResolvedValue("TestInput");
+// spyOn(command, "promptSelect").mockResolvedValue("test");
+
+// Call handleAction (cast to any if it's protected).
+await command.handleAction("SampleArg");
+
+// Assert that the fake spinner captured a success message.
+expect(helper.succeededMessage).toBeDefined();
+// You can add additional assertions as needed.
+});
+});

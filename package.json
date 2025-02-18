@@ -4,6 +4,7 @@
     "type": "module",
     "scripts": {
         "cindrox": "bun src/cli.ts",
+        "tree": "tree -I \"node_module*|*data*|coverage|coverage-html|logs\"",
         "lint": "bun biome check",
         "lint:fix": "bun biome check --write",
         "test": "bun test",
@@ -27,6 +28,7 @@
         "emittery": "^1.1.0",
         "hono": "^4.7.1",
         "mysql2": "^3.12.0",
+        "node-plop": "^0.32.0",
         "ora": "^8.2.0",
         "pino": "^9.6.0",
         "reflect-metadata": "^0.2.2",

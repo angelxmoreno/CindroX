@@ -12,13 +12,13 @@ This document outlines the remaining modules that need to be integrated into **C
 1. **Background Jobs** → [BullMQ](https://github.com/taskforcesh/bullmq) 🔄
 1. **Email Sending** → [Nodemailer](https://nodemailer.com/) + [MailCrab](https://github.com/tomMoulard/mailcrab) 🔄
 1. **File Uploads** → [Multer](https://www.npmjs.com/package/multer) 🔄
-1. **CLI & Shell** → [Commander.js](https://www.npmjs.com/package/commander) 🔄
 
 ---
 
 ## **Completed Integration**
 
 1. **Database ORM** → [Drizzle ORM](https://orm.drizzle.team/) 🔄 *(Next Priority)*
+1. **CLI & Shell** → [Commander.js](https://www.npmjs.com/package/commander) 🔄
 
 ---
 
@@ -47,6 +47,9 @@ Our current **priority order** for remaining integrations:
 7. move logger setup to config/modules/loggers.ts
 8. discuss DrizzleCli and the migrations scripts
 9. discuss how to add new models
+10. discuss commands; existing ones, how to create ones and how to test them
+11. have BaseCommand use a logger from AppContainer
+12. list cook recipes and how to create new ones
 ---
 
 
