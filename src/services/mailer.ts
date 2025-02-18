@@ -3,7 +3,7 @@ import AppContainer from "@config/container";
 import nodemailer from "nodemailer";
 import type { Options } from "nodemailer/lib/mailer";
 
-const logger = AppContainer.createChildLogger("Mailer");
+const logger = AppContainer.getLogger("Mailer");
 const emailConfig = appConfig.mailer;
 const transport = nodemailer.createTransport(emailConfig.url);
 
