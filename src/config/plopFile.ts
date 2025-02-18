@@ -45,6 +45,7 @@ export default function (plop: NodePlopAPI): void {
             });
         });
     };
+
     const actions = [
         {
             type: "add",
@@ -54,6 +55,22 @@ export default function (plop: NodePlopAPI): void {
         {
             type: "lint",
             path: `${srcPath}/commands/{{properCase name}}Command.ts`,
+        },
+        {
+            type: "append",
+            path: path.join(srcPath, "cli.ts"),
+            pattern: /import \{ Command.*/gi,
+            template: 'import { {{properCase name}}Command } from "@commands/{{properCase name}}Command";',
+        },
+        {
+            type: "append",
+            path: path.join(srcPath, "cli.ts"),
+            pattern: /(program.name.*)/gi,
+            template: "program.addCommand(new {{properCase name}}Command());",
+        },
+        {
+            type: "lint",
+            path: path.join(srcPath, "cli.ts"),
         },
         {
             type: "add",

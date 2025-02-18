@@ -8,6 +8,5 @@ program.name("CindroX-cli").description("CLI tool for the CindroX framework").ve
 
 program.addCommand(new HelloCommand());
 program.addCommand(new CookCommand());
-// You can add more command classes similarly
 
 program.parse();

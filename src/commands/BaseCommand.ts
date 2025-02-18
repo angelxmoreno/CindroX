@@ -1,4 +1,5 @@
 import { input, select } from "@inquirer/prompts";
+// @ts-ignore
 import type { InputConfig, SelectConfig } from "@types/inquirer-prompts";
 import chalk from "chalk";
 import { Command } from "commander";
