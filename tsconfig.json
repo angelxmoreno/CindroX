@@ -28,14 +28,16 @@
 
         // JavaScript Handling (Optional)
         "allowJs": false,
-        "baseUrl": "./src",
+        "baseUrl": "./",
         "paths": {
-            "@actions/*": ["actions/*"],
-            "@commands/*": ["commands/*"],
-            "@config/*": ["config/*"],
-            "@db/*": ["db/*"],
-            "@middleware/*": ["middleware/*"],
-            "@server/*": ["server/*"]
+            "@actions/*": ["src/actions/*"],
+            "@commands/*": ["src/commands/*"],
+            "@config/*": ["src/config/*"],
+            "@db/*": ["src/db/*"],
+            "@middleware/*": ["src/middleware/*"],
+            "@server/*": ["src/server/*"],
+            "@types/*": ["src/types/*"],
+            "@test-helpers/*": ["tests/helpers/*"]
         }
     }
 }

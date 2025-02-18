@@ -1,7 +1,9 @@
 import { input, select } from "@inquirer/prompts";
+// @ts-ignore
+import type { InputConfig, SelectConfig } from "@types/inquirer-prompts";
+import chalk from "chalk";
 import { Command } from "commander";
 import ora, { type Options as OraOptions, type Ora } from "ora";
-import type { InputConfig, SelectConfig } from "types/inquirer-prompts";
 
 /**
  * BaseCommand provides default configuration for CLI commands.
@@ -12,16 +14,16 @@ import type { InputConfig, SelectConfig } from "types/inquirer-prompts";
  *  - commandArgument: The argument(s) that the command accepts.
  *  - argumentDescription: A description for the argument(s).
  *
- * Subclasses must also implement the abstract method `handleAction` which contains
- * the command-specific logic.
+ * Subclasses must also implement the abstract method handleAction()
+ * which contains the command-specific logic.
  *
- * Additionally, BaseCommand exposes helper methods to prompt for input, select options,
- * and create a spinner. This makes it easier to test commands by allowing you to stub
- * these helper methods.
+ * Additionally, BaseCommand exposes helper methods to prompt for input,
+ * prompt for selections, and create a spinner. This abstraction improves
+ * testability by allowing these interactions to be stubbed or overridden.
  *
  * Usage:
  *  In a subclass, set the required properties and implement handleAction.
- *  Then, call `this.configureCommand()` in the subclass constructor.
+ *  Then, call this.configureCommand() in the subclass constructor.
  */
 export abstract class BaseCommand extends Command {
     // Abstract properties for command configuration.
@@ -39,7 +41,8 @@ export abstract class BaseCommand extends Command {
 
     /**
      * Configures the command using the subclass's properties.
-     * This method sets the name, description, arguments, and binds the action handler.
+     * This method sets the command's name, description, expected arguments,
+     * and binds the action handler.
      *
      * Subclasses should call this method in their constructor after setting their properties.
      */
@@ -56,9 +59,8 @@ export abstract class BaseCommand extends Command {
 
     /**
      * Helper method to prompt the user for free-text input.
-     * This wraps the @inquirer/prompts input function.
      *
-     * @param config - The configuration options for the input prompt.
+     * @param config - Configuration options for the input prompt.
      * @returns A promise that resolves to the user's input.
      */
     public async promptInput(config: InputConfig): Promise<string> {
@@ -67,9 +69,8 @@ export abstract class BaseCommand extends Command {
 
     /**
      * Helper method to prompt the user to select from a list of choices.
-     * This wraps the @inquirer/prompts select function.
      *
-     * @param config - The configuration options for the select prompt.
+     * @param config - Configuration options for the select prompt.
      * @returns A promise that resolves to the selected value.
      */
     public async promptSelect(config: SelectConfig<string>): Promise<string> {
@@ -78,12 +79,43 @@ export abstract class BaseCommand extends Command {
 
     /**
      * Helper method to create and return an Ora spinner.
-     * This allows you to easily stub or override spinner behavior in tests.
+     * This makes it easier to stub or override spinner behavior in tests.
      *
-     * @param options - Either a string message or an OraOptions object.
+     * @param options - A string message or an OraOptions object.
      * @returns An Ora spinner instance.
      */
     public getSpinner(options: string | OraOptions): Ora {
         return ora(options);
+    }
+
+    /**
+     * Helper method to log success messages using chalk.
+     *
+     * @param msg - The success message.
+     * @param data - Optional additional data to log.
+     */
+    public logSuccess(msg: string, data?: unknown): void {
+        if (data) {
+            console.log(chalk.green(msg), data);
+        } else {
+            console.log(chalk.green(msg));
+        }
+    }
+
+    /**
+     * Helper method to log errors.
+     *
+     * @param error - The error to log.
+     * @param verbose - If true, logs detailed error information.
+     */
+    public logError(error: unknown, verbose = false): void {
+        let message = (error as Error).message;
+        if (!message) {
+            message = "Unknown Error";
+        }
+        console.error(message);
+        if (verbose) {
+            console.error(error);
+        }
     }
 }
