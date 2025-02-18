@@ -4,7 +4,7 @@ import { HTTPException } from "hono/http-exception";
 
 const logger = AppContainer.getLogger("ErrorMiddleware");
 
-export const errorMiddleware: ErrorHandler = (err): Response => {
+export const errorMiddleware: ErrorHandler = async (err): Promise<Response> => {
     if (err instanceof HTTPException) {
         logger.error(err.name);
         return err.getResponse();
