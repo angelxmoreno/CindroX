@@ -1,6 +1,7 @@
 import type { NodePlopAPI } from "node-plop";
 import { commandGenerator } from "src/plop-generators/commandGenerator";
 import { lintAction } from "src/plop-generators/lintAction";
+import { middlewareGenerator } from "src/plop-generators/middlewareGenerator";
 
 /**
  * Plopfile entry point.
@@ -19,6 +20,6 @@ import { lintAction } from "src/plop-generators/lintAction";
 export default function (plop: NodePlopAPI): void {
     // Register the custom lint action.
     plop.setActionType("lint", lintAction);
-    // Register the "command" generator.
     plop.setGenerator("command", commandGenerator);
+    plop.setGenerator("middleware", middlewareGenerator);
 }
