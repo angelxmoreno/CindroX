@@ -1,5 +1,5 @@
 import { describe, expect, spyOn, test } from "bun:test";
-import { CookCommand } from "@commands/CookCommand";
+import { CookCommandCommand } from "@commands/cook/CookCommandCommand";
 import { CommandTestHelper } from "@test-helpers/CommandTestHelper";
 
 // For simplicity, we simulate node-plop and generator behavior.
@@ -11,7 +11,7 @@ const fakePlopResults = {
 describe("CookCommand", () => {
     test("should generate command successfully", async () => {
         const helper = new CommandTestHelper();
-        const cookCommand = new CookCommand();
+        const cookCommand = new CookCommandCommand();
         // Override spinner to use our fake spinner.
         helper.overrideSpinner(cookCommand);
 
