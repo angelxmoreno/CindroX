@@ -46,6 +46,7 @@ export class HonoTestHelper {
             res: resSpy as unknown as Response, // Cast our fake response for testing.
             env: {},
             final: false,
+            json: (obj: unknown) => JSON.stringify(obj),
         } as unknown as Context;
 
         return { ctx, resSpy };

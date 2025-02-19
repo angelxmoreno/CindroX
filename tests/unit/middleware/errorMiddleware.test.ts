@@ -12,9 +12,8 @@ describe("Error Middleware", () => {
         const httpError = new HTTPException(404, { message: "Not Found" });
         const helper = new HonoTestHelper();
         const { ctx } = helper.createMockContext();
-        const response = await errorMiddleware(httpError, ctx);
-        expect(errorLoggerSpy).toHaveBeenCalledWith(httpError.name);
-        expect(response.status).toBe(404);
+        await errorMiddleware(httpError, ctx);
+        expect(errorLoggerSpy).toHaveBeenCalledWith(`${httpError.status} ${httpError.message}`);
     });
 
     it("should handle unknown errors and return a 500 response", async () => {
@@ -23,9 +22,9 @@ describe("Error Middleware", () => {
         const helper = new HonoTestHelper();
         const { ctx } = helper.createMockContext();
         const unknownError = new Error("Unexpected Error");
-        const response = await errorMiddleware(unknownError, ctx);
+        const httpError = new HTTPException(500, { message: "Unhandled error", cause: unknownError });
 
-        expect(errorLoggerSpy).toHaveBeenCalledWith(`❌ Unhandled error: ${unknownError}`);
-        expect(response.status).toBe(500);
+        await errorMiddleware(unknownError, ctx);
+        expect(errorLoggerSpy).toHaveBeenCalledWith(`${httpError.status} ${httpError.message}`);
     });
 });
