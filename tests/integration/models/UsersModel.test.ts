@@ -1,43 +1,26 @@
-// tests/integration/models/UserModel.test.ts
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import AppContainer from "@config/container";
 import type { UsersModel } from "@db/models/UsersModel";
-import { DrizzleCli } from "@db/scripts/DrizzleCli";
-import type { MySql2Database } from "drizzle-orm/mysql2/driver";
+import { DatabaseTestHelper } from "@test-helpers/DatabaseTestHelper";
 
 describe("UserModel Integration Tests", () => {
     let usersModel: UsersModel;
-    let db: MySql2Database;
+    let dbHelper: DatabaseTestHelper;
 
     beforeAll(async () => {
-        // Migrate the test database to the latest production schema.
-        try {
-            const cli = new DrizzleCli();
-            await cli.migrationsMigrateCommand();
-            db = AppContainer.resolve("db");
-            usersModel = AppContainer.resolve("UsersModel");
-        } catch (error) {
-            console.error("Test setup failed:", error);
-            throw error;
-        }
+        usersModel = AppContainer.resolve("UsersModel");
+        dbHelper = new DatabaseTestHelper();
+        await dbHelper.setup();
     });
 
     afterAll(async () => {
-        // Truncate the users table to clean up after tests.
-        await db.execute("TRUNCATE TABLE `users`");
+        await dbHelper.cleanup();
     });
 
     test("create() returns the inserted record and findById() retrieves it", async () => {
-        const newUserData = {
-            name: "Integration Test User",
-            email: "integration@example.com",
-            password: "password123",
-        };
-
-        const createdUser = await usersModel.create(newUserData);
+        const createdUser = await dbHelper.createUser();
         expect(createdUser).toBeDefined();
         expect(createdUser.id).toBeGreaterThan(0);
-
         const fetchedUser = await usersModel.findById(createdUser.id);
         expect(fetchedUser).toEqual(createdUser);
     });
@@ -50,26 +33,37 @@ describe("UserModel Integration Tests", () => {
     });
 
     test("update() returns the updated record", async () => {
-        const newUserData = {
-            name: "User To Update",
-            email: "update@example.com",
-            password: "pass",
-        };
-        const createdUser = await usersModel.create(newUserData);
+        const createdUser = await dbHelper.createUser();
         const updatedData = { name: "Updated Name" };
         const updatedUser = await usersModel.update(createdUser.id, updatedData);
         expect(updatedUser.name).toEqual("Updated Name");
     });
 
     test("delete() removes the record", async () => {
-        const newUserData = {
-            name: "User To Delete",
-            email: "delete@example.com",
-            password: "pass",
-        };
-        const createdUser = await usersModel.create(newUserData);
+        const createdUser = await dbHelper.createUser();
         await usersModel.delete(createdUser.id);
         const deletedUser = await usersModel.findById(createdUser.id);
         expect(deletedUser).toBeNull();
+    });
+
+    test("findAll() does not include password", async () => {
+        const allUsers = await usersModel.findAll();
+        for (const user of allUsers) {
+            expect(user).not.toHaveProperty("password");
+        }
+    });
+
+    test("findById() does not include password", async () => {
+        const createdUser = await dbHelper.createUser();
+        const fetchedUser = await usersModel.findById(createdUser.id);
+        expect(fetchedUser).toBeDefined();
+        expect(fetchedUser).not.toHaveProperty("password");
+    });
+
+    test("findByEmail() should include password", async () => {
+        const createdUser = await dbHelper.createUser();
+        const fetchedUser = await usersModel.findByEmail(createdUser.email);
+        expect(fetchedUser).toBeDefined();
+        expect(fetchedUser).toHaveProperty("password");
     });
 });

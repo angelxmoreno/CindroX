@@ -7,6 +7,8 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class UsersModel extends SimpleModel<UsersTable> {
+    hiddenColumns = ["password"];
+
     constructor(@inject("db") db: MySql2Database) {
         super(db, usersTable);
     }
