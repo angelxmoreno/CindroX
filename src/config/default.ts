@@ -31,6 +31,13 @@ const defaultConfig = {
         port: Number(Bun.env.SERVER_PORT ?? 3001),
     },
     database: databaseConfig,
+    passport: {
+        strategies: {
+            jwt: {
+                secret: Bun.env.JWT_SECRET ?? "secret_key",
+            },
+        },
+    },
     logger: loggerConfig,
     cache: {
         driver: Bun.env.CACHE_DRIVER ?? "memory",
