@@ -4,6 +4,7 @@ import type { InsertUser, SelectUser } from "@db/schemas/users";
 // tests/helpers/DatabaseTestHelper.ts
 import { DrizzleCli } from "@db/scripts/DrizzleCli";
 import { faker } from "@faker-js/faker";
+import { sql } from "drizzle-orm";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import jwt from "jsonwebtoken";
 
@@ -49,7 +50,7 @@ export class DatabaseTestHelper {
      */
     async cleanup(): Promise<void> {
         for (const table of this.tables) {
-            await this.db.execute(`TRUNCATE TABLE \`${table}\``);
+            await this.db.execute(sql.raw(`TRUNCATE TABLE ${table};`));
         }
     }
 
