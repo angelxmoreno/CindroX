@@ -1,11 +1,13 @@
-import type { ActionInterface } from "@actions/ActionInterface";
+import { BaseAction } from "@actions/BaseAction";
 import type { Context } from "hono";
 import type { Logger } from "pino";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class IndexAction implements ActionInterface {
-    constructor(@inject("Logger") private logger: Logger) {}
+export class IndexAction extends BaseAction {
+    constructor(@inject("Logger") private logger: Logger) {
+        super();
+    }
 
     async handle(c: Context): Promise<Response> {
         this.logger.info("Health check accessed");

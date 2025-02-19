@@ -1,4 +1,5 @@
 import AppContainer from "@config/container";
+import { ProtectRouteMiddleware } from "@config/modules/passport/ProtectRouteMiddleware";
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 
@@ -20,6 +21,11 @@ export async function routingMiddleware(c: Context) {
     }
 
     logger.info(`✅ Found action: ${actionName}`);
+
+    // Check if the action instance indicates it is protected.
+    if (actionInstance.isProtected) {
+        await ProtectRouteMiddleware()(c, async () => {});
+    }
 
     // Execute action
     return await actionInstance.handle(c);
