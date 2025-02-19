@@ -1,8 +1,8 @@
-import type { ActionInterface } from "@actions/ActionInterface";
+import type { BaseAction } from "@actions/BaseAction";
 import type { DrizzleModuleClass } from "@config/modules/DrizzleModuleClass";
 import type { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import type { CacheClassModule } from "@config/modules/cache";
-import type UsersModel from "@db/models/UsersModel";
+import type { UsersModel } from "@db/models/UsersModel";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import type Emittery from "emittery";
@@ -38,7 +38,7 @@ class AppContainerModuleClass {
         return this.baseContainer.resolve<AppDependencies[T]>(key);
     }
 
-    resolveAction<T extends ActionInterface>(actionKey: string): T | undefined {
+    resolveAction<T extends BaseAction>(actionKey: string): T | undefined {
         return this.actionsContainer.isRegistered(actionKey) ? this.actionsContainer.resolve<T>(actionKey) : undefined;
     }
 
