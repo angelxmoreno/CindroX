@@ -1,5 +1,6 @@
 import { appConfig } from "@config/app";
 import AppContainer from "@config/container";
+import { PassportHonoAdapterMiddleware } from "@config/modules/passport/PassportHonoAdapterMiddleware";
 import { errorMiddleware } from "@middleware/errorMiddleware";
 import { loggerMiddleware } from "@middleware/loggerMiddleware";
 import { routingMiddleware } from "@middleware/routingMiddleware";
@@ -8,6 +9,7 @@ import { Hono } from "hono";
 const logger = AppContainer.getLogger("App");
 const server = new Hono();
 
+server.use("*", PassportHonoAdapterMiddleware());
 // Register Middleware
 server.use("*", loggerMiddleware);
 

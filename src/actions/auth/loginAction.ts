@@ -16,7 +16,7 @@ import jwt from "jsonwebtoken";
  */
 export class LoginAction extends BaseAction {
     async handle(c: Context): Promise<Response> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             // Authenticate using Passport's "local" strategy.
             passport.authenticate(
                 "local",
@@ -42,7 +42,7 @@ export class LoginAction extends BaseAction {
                             message: infoMessage,
                             cause: err,
                         });
-                        resolve(err401.getResponse());
+                        reject(err401);
                         return;
                     }
                     // If authentication is successful, sign a JWT with the user id.
