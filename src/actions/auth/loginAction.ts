@@ -2,6 +2,7 @@ import { BaseAction } from "@actions/BaseAction";
 import { appConfig } from "@config/app";
 import passport from "@config/modules/passport";
 import type { SelectUser } from "@db/schemas/users";
+import { userLogInSchema } from "@validation/action/auth";
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import jwt from "jsonwebtoken";
@@ -15,6 +16,8 @@ import jwt from "jsonwebtoken";
  * Endpoint: POST /auth/login
  */
 export class LoginAction extends BaseAction {
+    validationSchema = userLogInSchema;
+
     async handle(c: Context): Promise<Response> {
         return new Promise((resolve, reject) => {
             // Authenticate using Passport's "local" strategy.

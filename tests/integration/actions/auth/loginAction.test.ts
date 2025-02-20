@@ -36,7 +36,7 @@ describe("Log In Action", () => {
             token: expect.any(String),
         });
     });
-    it("returns a 401 error on invalid credentials", async () => {
+    it("returns a 400 error on invalid credentials", async () => {
         const res = await server.request("/auth/login", {
             method: "POST",
             body: JSON.stringify({
@@ -47,7 +47,7 @@ describe("Log In Action", () => {
         });
 
         const body = await res.json();
-        expect(res.status).toBe(401);
+        expect(res.status).toBe(400);
         // You can also check for the error message if desired.
         expect(body).toHaveProperty("message", expect.any(String));
     });
