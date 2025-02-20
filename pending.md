@@ -17,7 +17,6 @@ This document outlines the remaining modules that need to be integrated into **C
 1. **Database ORM** → [Drizzle ORM](https://orm.drizzle.team/) 🔄 *(Next Priority)*
 1. **CLI & Shell** → [Commander.js](https://www.npmjs.com/package/commander) 🔄
 1. **Code Generation** → [Plop](https://plopjs.com/) 🔄
-1. **Code Generation** → [Plop](https://plopjs.com/) 🔄
 1. **Authentication** → [Lucia Auth](https://lucia-auth.com/) 🔄
 1. **Validation & Data Sanitization** → [Zod](https://zod.dev/) 🔄
 

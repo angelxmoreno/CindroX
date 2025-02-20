@@ -15,7 +15,7 @@ import jwt from "jsonwebtoken";
  *
  * Endpoint: POST /auth/login
  */
-export class LoginAction extends BaseAction {
+export class LoginAction extends BaseAction<typeof userLogInSchema> {
     validationSchema = userLogInSchema;
 
     async handle(c: Context): Promise<Response> {
