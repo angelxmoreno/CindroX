@@ -1,11 +1,11 @@
 import AppContainer from "@config/container";
 import { ProtectRouteMiddleware } from "@config/modules/passport/ProtectRouteMiddleware";
-import type { Context } from "hono";
+import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 
 const logger = AppContainer.getLogger("Router");
 
-export async function routingMiddleware(c: Context) {
+export async function routingMiddleware(c: Context, next: Next) {
     const method = c.req.method.toUpperCase();
     const path = c.req.path.toLowerCase();
     const actionName = `${method}:${path}`;
@@ -28,5 +28,5 @@ export async function routingMiddleware(c: Context) {
     }
 
     // Execute action
-    return await actionInstance.handle(c);
+    return await actionInstance.execute(c, next);
 }
