@@ -6,7 +6,6 @@ This document outlines the remaining modules that need to be integrated into **C
 
 ## **🟡 Pending Integration**
 
-1. **Validation & Data Sanitization** → [Zod](https://zod.dev/) 🔄
 1. **Background Jobs** → [BullMQ](https://github.com/taskforcesh/bullmq) 🔄
 1. **Email Sending** → [Nodemailer](https://nodemailer.com/) + [MailCrab](https://github.com/tomMoulard/mailcrab) 🔄
 1. **File Uploads** → [Multer](https://www.npmjs.com/package/multer) 🔄
@@ -20,6 +19,7 @@ This document outlines the remaining modules that need to be integrated into **C
 1. **Code Generation** → [Plop](https://plopjs.com/) 🔄
 1. **Code Generation** → [Plop](https://plopjs.com/) 🔄
 1. **Authentication** → [Lucia Auth](https://lucia-auth.com/) 🔄
+1. **Validation & Data Sanitization** → [Zod](https://zod.dev/) 🔄
 
 ---
 
