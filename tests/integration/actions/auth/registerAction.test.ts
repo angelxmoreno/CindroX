@@ -28,12 +28,11 @@ describe("Register Action", () => {
             headers: { "Content-Type": "application/json" },
         });
         const body = await res.json();
-
         expect(res.status).toBe(200);
         expect(body).toEqual({
             user: expect.objectContaining({
                 id: expect.any(Number),
-                email: user.email,
+                email: user.email.toLowerCase(),
                 name: user.name,
             }),
             token: expect.any(String),
@@ -50,7 +49,7 @@ describe("Register Action", () => {
             method: "POST",
             body: JSON.stringify({
                 name: newUser.name,
-                email: newUser.email,
+                email: newUser.email.toLowerCase(),
                 password: newUser.password,
             }),
             headers: { "Content-Type": "application/json" },

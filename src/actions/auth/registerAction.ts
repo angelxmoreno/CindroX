@@ -1,6 +1,7 @@
 import { BaseAction } from "@actions/BaseAction";
 import { appConfig } from "@config/app";
 import type { UsersModel } from "@db/models/UsersModel";
+import { userRegisterSchema } from "@validation/action/auth";
 import type { Context } from "hono";
 import jwt from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
@@ -10,26 +11,23 @@ import { inject, injectable } from "tsyringe";
  *
  * It reads the email, password, and name from the request body, validates the input,
  * checks if a user already exists, and if not, creates the user via UsersModel.
- * (Note: UsersModel.create handles password hashing internally.)
+ * (Note: UsersModel.create() handles password hashing internally.)
  * Finally, a JWT is signed with the user's ID and returned along with the user object.
  *
  * Endpoint: POST /auth/register
  */
+//z.infer<NonNullable<TSchema>>
 @injectable()
-export class RegisterAction extends BaseAction {
+export class RegisterAction extends BaseAction<typeof userRegisterSchema> {
+    validationSchema = userRegisterSchema;
+
     constructor(@inject("UsersModel") private usersModel: UsersModel) {
         super();
     }
 
     async handle(c: Context): Promise<Response> {
         try {
-            // Parse registration data from the request body.
-            const { email, password, name } = await c.req.json();
-
-            // Basic input validation.
-            if (!email || !password || !name) {
-                return c.json({ message: "Email, password, and name are required." }, 400);
-            }
+            const { name, email, password } = this.getFormData(c);
 
             // Check if a user with the given email already exists.
             const existingUser = await this.usersModel.findByEmail(email);

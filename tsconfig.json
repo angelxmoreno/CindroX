@@ -37,6 +37,7 @@
             "@middleware/*": ["src/middleware/*"],
             "@server/*": ["src/server/*"],
             "@types/*": ["src/types/*"],
+            "@validation/*": ["src/validation/*"],
             "@test-helpers/*": ["tests/helpers/*"]
         }
     }

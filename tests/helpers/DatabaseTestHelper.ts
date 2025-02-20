@@ -68,7 +68,7 @@ export class DatabaseTestHelper {
         const defaultUser: InsertUser = {
             name: faker.person.fullName(),
             email: faker.internet.email(),
-            password: faker.internet.password(),
+            password: `${faker.internet.password()}4U!`,
         };
         return { ...defaultUser, ...override };
     }
