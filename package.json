@@ -27,6 +27,7 @@
         "@keyvhq/redis": "^2.1.5",
         "@types/express": "^5.0.0",
         "argon2": "^0.41.1",
+        "bullmq": "^5.41.3",
         "chalk": "^5.4.1",
         "commander": "^13.1.0",
         "drizzle-orm": "^0.39.3",

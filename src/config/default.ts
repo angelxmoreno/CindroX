@@ -43,6 +43,10 @@ const defaultConfig = {
         driver: Bun.env.CACHE_DRIVER ?? "memory",
         redisUrl: Bun.env.REDIS_CACHE_URL ?? null,
     },
+    bullMq: {
+        redisUrl: Bun.env.QUEUE_REDIS_URL ?? "memory",
+        queues: ["helloQueue"],
+    },
 } as const;
 
 export type AppConfig = typeof defaultConfig;
