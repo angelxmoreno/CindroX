@@ -5,6 +5,7 @@ import { DrizzleModuleClass } from "@config/modules/DrizzleModuleClass";
 import { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import actionMap from "@config/modules/actionMap";
 import { CacheClassModule } from "@config/modules/cache";
+import { QueueLogsModel } from "@db/models/QueueLogsModel";
 import { UsersModel } from "@db/models/UsersModel";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
@@ -45,6 +46,9 @@ baseContainer.register<DrizzleKitConfig>("drizzleKitConfig", {
 baseContainer.register<UsersModel>("UsersModel", {
     useClass: UsersModel,
 });
-const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer, loggerRegistry);
+baseContainer.register<QueueLogsModel>("QueueLogsModel", {
+    useClass: QueueLogsModel,
+});
+const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer);
 
 export default AppContainer;

@@ -8,6 +8,13 @@
       "when": 1739762886477,
       "tag": "0000_Users",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1740089729087,
+      "tag": "0001_QueueLogs",
+      "breakpoints": true
     }
   ]
 }
