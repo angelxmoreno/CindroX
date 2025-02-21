@@ -1,12 +1,14 @@
 import "reflect-metadata";
 import { appConfig } from "@config/app";
 import AppContainerModuleClass from "@config/modules/AppContainerModuleClass";
+import { BullMQModule } from "@config/modules/BullMQModule";
 import { DrizzleModuleClass } from "@config/modules/DrizzleModuleClass";
 import { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import actionMap from "@config/modules/actionMap";
 import { CacheClassModule } from "@config/modules/cache";
 import { QueueLogsModel } from "@db/models/QueueLogsModel";
 import { UsersModel } from "@db/models/UsersModel";
+import { HelloJob } from "@jobs/HelloJob";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import Emittery from "emittery";
@@ -48,6 +50,18 @@ baseContainer.register<UsersModel>("UsersModel", {
 });
 baseContainer.register<QueueLogsModel>("QueueLogsModel", {
     useClass: QueueLogsModel,
+});
+baseContainer.register<BullMQModule>("BullMQ", {
+    useFactory: () =>
+        new BullMQModule({
+            logger: loggerRegistry.getLogger("Queue"),
+            redisUrl: appConfig.bullMq.redisUrl,
+            queueNames: [...appConfig.bullMq.queues],
+        }),
+});
+
+baseContainer.register<HelloJob>("HelloJob", {
+    useClass: HelloJob,
 });
 const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer);
 
