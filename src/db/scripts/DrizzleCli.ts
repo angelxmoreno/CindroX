@@ -1,4 +1,3 @@
-// src/db/scripts/DrizzleCli.ts
 import { exec } from "node:child_process";
 import AppContainer from "@config/container";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";

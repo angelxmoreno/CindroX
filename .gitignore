@@ -4,6 +4,7 @@
 
 logs/*
 !logs/.gitkeep
+!logs/workers/.gitkeep
 _.log
 npm-debug.log_
 yarn-debug.log*

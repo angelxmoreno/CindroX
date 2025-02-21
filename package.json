@@ -3,6 +3,7 @@
     "main": "index.ts",
     "type": "module",
     "scripts": {
+        "app:run": "./docker/app-run.sh",
         "cindrox": "bun src/cli.ts",
         "tree": "tree -I \"node_module*|*data*|coverage|coverage-html|logs\"",
         "lint": "bun biome check",
@@ -16,6 +17,8 @@
         "docker": "docker compose --project-name cindro-x --env-file .env -f docker/docker-compose.yml",
         "docker:start": "bun run docker up -d",
         "docker:stop": "bun run docker down",
+        "docker:build": "bun run docker build",
+        "docker:restart": "bun run docker:stop && bun run docker:start",
         "test:docker": "docker run --rm -it --env-file .env -v $(pwd):/app -w /app imbios/bun-node:1.1.18-18.20.2-alpine bun test --coverage --reporter=lcov"
     },
     "dependencies": {
@@ -24,6 +27,7 @@
         "@keyvhq/redis": "^2.1.5",
         "@types/express": "^5.0.0",
         "argon2": "^0.41.1",
+        "bullmq": "^5.41.3",
         "chalk": "^5.4.1",
         "commander": "^13.1.0",
         "drizzle-orm": "^0.39.3",
@@ -38,6 +42,7 @@
         "passport-jwt": "^4.0.1",
         "passport-local": "^1.0.0",
         "pino": "^9.6.0",
+        "pm2": "^5.4.3",
         "reflect-metadata": "^0.2.2",
         "tsyringe": "^4.8.0",
         "typescript": "^5.0.0",

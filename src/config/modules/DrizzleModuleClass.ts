@@ -1,4 +1,5 @@
 import * as path from "node:path";
+import { appPaths } from "@config/paths";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import { drizzle } from "drizzle-orm/mysql2";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
@@ -9,8 +10,6 @@ export type DatabaseConfig = {
     collation: string;
     timezone: string;
 };
-
-const dbPath = path.join(__dirname, "..", "..", "db");
 
 export class DrizzleModuleClass {
     private readonly database: MySql2Database;
@@ -35,8 +34,8 @@ export class DrizzleModuleClass {
 
         this.drizzleKitConfiguration = {
             dialect: "mysql",
-            out: path.join(dbPath, "migrations"),
-            schema: path.join(dbPath, "schemas"),
+            out: "src/db/migrations", // drizzle prepends this with `./` for some odd reason so we need to set this manually
+            schema: path.join(appPaths.db, "schemas"),
             dbCredentials: {
                 url: this.config.url,
             },
