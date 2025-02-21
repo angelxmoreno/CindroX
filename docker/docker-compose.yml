@@ -20,6 +20,34 @@ services:
       - $HOME/.gitconfig:/root/.gitconfig:ro  # Mount Git config (read-only)
       - ..:/app  # Mount the project directory for live-reloading
 
+  pm2-worker:
+    container_name: ${CONTAINER_PREFIX}_workers
+    restart: unless-stopped
+    working_dir: "/app"
+    command: [ "pm2-runtime", "start", "src/workers/ecosystem.config.cjs" ]
+    build:
+      context: .
+      dockerfile: ./pm2-worker/Dockerfile
+    depends_on:
+      - redis
+      - mariadb
+    volumes:
+      - ../:/app
+
+  bullboard:
+    container_name: ${CONTAINER_PREFIX}_bullboard
+    image: venatum/bull-board:latest
+    restart: unless-stopped
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      USER_LOGIN: no-bull
+      USER_PASSWORD: no-bull
+    ports:
+      - "4000:3000"
+    depends_on:
+      - redis
+
   mariadb:
     image: mariadb:latest
     container_name: ${CONTAINER_PREFIX}_mariadb
