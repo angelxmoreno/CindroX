@@ -65,10 +65,11 @@ const defaultConfig = {
     mailer: {
         url: getEnvValue<string>(
             {
+                test: "smtp://mailhog:1025",
                 development: Bun.env.MAIL_URL,
                 production: Bun.env.MAIL_URL,
             },
-            "smtp://mailhog:1025",
+            "smtp://localhost:1025",
         ),
         fromEmail: Bun.env.MAIL_FROM_EMAIL ?? "no-reply@local",
         fromName: Bun.env.MAIL_FROM_NAME ?? "Admin",
