@@ -9,11 +9,9 @@ import { UsersModel } from "@db/models/UsersModel";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import Emittery from "emittery";
-import pino, { type Logger } from "pino";
+import pino from "pino";
 import { type DependencyContainer, container } from "tsyringe";
 
-const parentLogger = pino(appConfig.logger);
-const loggerRegistry = new LoggerRegistry(parentLogger);
 const baseContainer: DependencyContainer = container.createChildContainer();
 const actionsContainer: DependencyContainer = baseContainer.createChildContainer();
 
@@ -21,8 +19,9 @@ baseContainer.register("EventManager", {
     useValue: new Emittery(),
 });
 
-baseContainer.register<Logger>("Logger", {
-    useValue: parentLogger,
+const loggerRegistry = new LoggerRegistry(pino(appConfig.logger));
+baseContainer.register<LoggerRegistry>("Loggers", {
+    useValue: loggerRegistry,
 });
 
 baseContainer.register<CacheClassModule>("Cache", {

@@ -5,7 +5,7 @@ import Emittery from "emittery";
 
 describe("AppContainer (Dependency Injection)", () => {
     it("should resolve Logger from AppContainer", () => {
-        const logger = AppContainer.resolve("Logger");
+        const logger = AppContainer.getLogger("Test");
         expect(logger).toBeDefined();
         expect(typeof logger.info).toBe("function");
     });

@@ -10,28 +10,22 @@ import type { Logger } from "pino";
 import type { DependencyContainer } from "tsyringe";
 
 interface AppDependencies {
-    Logger: Logger;
     EventManager: Emittery;
     Cache: CacheClassModule;
     DrizzleModule: DrizzleModuleClass;
     db: MySql2Database;
     drizzleKitConfig: DrizzleKitConfig;
     UsersModel: UsersModel;
+    Loggers: LoggerRegistry;
 }
 
 class AppContainerModuleClass {
     private baseContainer: DependencyContainer;
     private actionsContainer: DependencyContainer;
-    private loggerRegistry: LoggerRegistry;
 
-    constructor(
-        baseContainer: DependencyContainer,
-        actionsContainer: DependencyContainer,
-        loggerRegistry: LoggerRegistry,
-    ) {
+    constructor(baseContainer: DependencyContainer, actionsContainer: DependencyContainer) {
         this.baseContainer = baseContainer;
         this.actionsContainer = actionsContainer;
-        this.loggerRegistry = loggerRegistry;
     }
 
     resolve<T extends keyof AppDependencies>(key: T): AppDependencies[T] {
@@ -43,7 +37,7 @@ class AppContainerModuleClass {
     }
 
     getLogger(moduleName: string): Logger {
-        return this.loggerRegistry.getLogger(moduleName);
+        return this.resolve("Loggers").getLogger(moduleName);
     }
 }
 
