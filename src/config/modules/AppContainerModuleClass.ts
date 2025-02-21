@@ -9,6 +9,7 @@ import type { HelloJob } from "@jobs/HelloJob";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import type Emittery from "emittery";
+import type { Transporter } from "nodemailer";
 import type { Logger } from "pino";
 import type { DependencyContainer } from "tsyringe";
 
@@ -23,6 +24,7 @@ interface AppDependencies {
     QueueLogsModel: QueueLogsModel;
     Loggers: LoggerRegistry;
     HelloJob: HelloJob;
+    MailTransport: Transporter;
 }
 
 class AppContainerModuleClass {

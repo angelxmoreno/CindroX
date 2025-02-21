@@ -1,12 +1,10 @@
 import { appConfig } from "@config/app";
 import AppContainer from "@config/container";
-import nodemailer from "nodemailer";
 import type { Options } from "nodemailer/lib/mailer";
 
 const logger = AppContainer.getLogger("Mailer");
 const emailConfig = appConfig.mailer;
-const transport = nodemailer.createTransport(emailConfig.url);
-
+const transport = AppContainer.resolve("MailTransport");
 export const sendEmail = async (to: string, subject: string, text: string, html?: string) => {
     try {
         const options: Options = {

@@ -22,7 +22,6 @@ const pinoTargets: TransportTargetOptions[] = [
         level: logLevel,
     },
 ];
-console.info({ logLevel, bun: Bun.env.NODE_ENV, process: process.env.NODE_ENV });
 if (pinoLogFileLevel && pinoLogFilePath) {
     pinoTargets.push({ target: "pino/file", options: { destination: pinoLogFilePath }, level: logLevel });
 }
