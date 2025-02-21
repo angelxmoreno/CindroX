@@ -7,8 +7,6 @@ services:
     restart: unless-stopped
     working_dir: "/app"
     command: [ "bun", "dev" ]
-    environment:
-      NODE_ENV: ${NODE_ENV}
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:

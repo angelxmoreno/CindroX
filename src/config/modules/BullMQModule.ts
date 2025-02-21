@@ -92,7 +92,9 @@ export class BullMQModule {
             connection: this.redisConnection,
             concurrency,
         });
-
+        worker.on("error", (error) => {
+            this.logger.error(`Worker ${name} error: ${error.message}`);
+        });
         this.logger.info(`New worker ${name} created`);
         return worker;
     }

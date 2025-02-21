@@ -1,14 +1,30 @@
 import type { DatabaseConfig } from "@config/modules/DrizzleModuleClass";
+import { getEnvValue } from "@utils/getEnvValue";
 import type { LoggerOptions, TransportTargetOptions } from "pino";
 
 const nodeEnv = Bun.env.NODE_ENV ?? "test";
 const isTestEnv = nodeEnv === "test";
 
+const logLevel = getEnvValue<string>(
+    {
+        test: "error",
+        development: "debug",
+    },
+    "info",
+);
+
 const pinoLogFileLevel = Bun.env.LOGGER_FILE_LEVEL ?? null;
 const pinoLogFilePath = Bun.env.LOGGER_FILE_PATH ?? null;
-const pinoTargets: TransportTargetOptions[] = [{ target: "pino-pretty", options: { colorize: true }, level: "debug" }];
+const pinoTargets: TransportTargetOptions[] = [
+    {
+        target: "pino-pretty",
+        options: { colorize: true },
+        level: logLevel,
+    },
+];
+console.info({ logLevel, bun: Bun.env.NODE_ENV, process: process.env.NODE_ENV });
 if (pinoLogFileLevel && pinoLogFilePath) {
-    pinoTargets.push({ target: "pino/file", options: { destination: pinoLogFilePath }, level: pinoLogFileLevel });
+    pinoTargets.push({ target: "pino/file", options: { destination: pinoLogFilePath }, level: logLevel });
 }
 
 const loggerConfig: LoggerOptions = {
