@@ -64,7 +64,13 @@ const defaultConfig = {
         queues: ["helloQueue"],
     },
     mailer: {
-        url: Bun.env.MAIL_URL ?? "smtp://localhost:7025",
+        url: getEnvValue<string>(
+            {
+                development: Bun.env.MAIL_URL,
+                production: Bun.env.MAIL_URL,
+            },
+            "smtp://mailhog:1025",
+        ),
         fromEmail: Bun.env.MAIL_FROM_EMAIL ?? "no-reply@local",
         fromName: Bun.env.MAIL_FROM_NAME ?? "Admin",
     },
