@@ -2,10 +2,11 @@ version: "3.8"
 
 services:
   app:
-    image: imbios/bun-node:1.1.18-18.20.2-alpine
+    image: imbios/bun-node:1.1.18-18.20.2-alpine-git
     container_name: ${CONTAINER_PREFIX}_app
-    restart: always
-    command: ["bun", "run", "dev"]
+    restart: unless-stopped
+    working_dir: "/app"
+    command: [ "bun", "dev" ]
     environment:
       NODE_ENV: ${NODE_ENV}
     ports:
@@ -15,12 +16,14 @@ services:
       - mariadb
       - mailcrab
     volumes:
+      - $HOME/.ssh:/root/.ssh:ro  # Mount SSH keys (read-only)
+      - $HOME/.gitconfig:/root/.gitconfig:ro  # Mount Git config (read-only)
       - ..:/app  # Mount the project directory for live-reloading
 
   mariadb:
     image: mariadb:latest
     container_name: ${CONTAINER_PREFIX}_mariadb
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -34,7 +37,7 @@ services:
   mariadb_test:
     image: mariadb:latest
     container_name: ${CONTAINER_PREFIX}_mariadb_test
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_TEST_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_TEST_DATABASE}
@@ -48,7 +51,7 @@ services:
   redis:
     image: redis:alpine
     container_name: ${CONTAINER_PREFIX}_redis
-    restart: always
+    restart: unless-stopped
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
@@ -57,7 +60,7 @@ services:
   mailcrab:
     image: marlonb/mailcrab:latest
     container_name: ${CONTAINER_PREFIX}_mailcrab
-    restart: always
+    restart: unless-stopped
     ports:
       - "${MAILCRAB_UI_PORT}:1080"
       - "${MAILCRAB_SMTP_PORT}:1025"

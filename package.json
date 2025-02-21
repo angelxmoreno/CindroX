@@ -3,6 +3,7 @@
     "main": "index.ts",
     "type": "module",
     "scripts": {
+        "app:run": "./docker/app-run.sh",
         "cindrox": "bun src/cli.ts",
         "tree": "tree -I \"node_module*|*data*|coverage|coverage-html|logs\"",
         "lint": "bun biome check",
@@ -16,6 +17,8 @@
         "docker": "docker compose --project-name cindro-x --env-file .env -f docker/docker-compose.yml",
         "docker:start": "bun run docker up -d",
         "docker:stop": "bun run docker down",
+        "docker:build": "bun run docker build",
+        "docker:restart": "bun run docker:stop && bun run docker:start",
         "test:docker": "docker run --rm -it --env-file .env -v $(pwd):/app -w /app imbios/bun-node:1.1.18-18.20.2-alpine bun test --coverage --reporter=lcov"
     },
     "dependencies": {
