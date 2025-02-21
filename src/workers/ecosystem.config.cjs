@@ -12,15 +12,15 @@ const pmConfig = {
             script: "src/workers/HelloWorker.ts",
             instances: 2, // Spawns 2 separate processes
             // exec_mode: "cluster", // does not work with custom interpreter
-            error_file: "logs/workers/helloWorker.log",
-            out_file: "logs/workers/helloWorker-errors.log",
+            out_file: "logs/workers/helloWorker.log",
+            error_file: "logs/workers/helloWorker-errors.log",
             ...common,
         },
         {
             name: "QueueEventListener",
             script: "src/workers/QueueEventListener.ts",
-            error_file: "logs/workers/QueueEventListener.log",
-            out_file: "logs/workers/QueueEventListener-errors.log",
+            out_file: "logs/workers/QueueEventListener.log",
+            error_file: "logs/workers/QueueEventListener-errors.log",
             ...common,
         },
     ],

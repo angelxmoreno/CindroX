@@ -10,12 +10,17 @@ const queueNames = appConfig.bullMq.queues;
 
 // Function to log queue events to the database
 const logEvent = async (queueName: string, event: string, jobId: string, details?: object) => {
-    await queueLogsModel.create({
-        queue: queueName,
-        jobId,
-        event,
-        details: details ? JSON.stringify(details) : null,
-    });
+    try {
+        await queueLogsModel.create({
+            queue: queueName,
+            jobId,
+            event,
+            details: details ? JSON.stringify(details) : null,
+        });
+    } catch (e) {
+        const error = e as Error;
+        logger.error(`Failed to log event "${event}" for job ${jobId}: ${error.message}`);
+    }
 };
 
 // Attach QueueEvents to each queue
