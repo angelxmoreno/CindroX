@@ -1,33 +1,22 @@
 import { describe, expect, it, spyOn } from "bun:test";
 import AppContainer from "@config/container";
 import { loggerMiddleware } from "@middleware/loggerMiddleware";
-import type { Context } from "hono";
+import { HonoTestHelper } from "@test-helpers/HonoTestHelper";
 
 describe("Logger Middleware", () => {
     it("should log the request method and path", async () => {
-        // ✅ Get logger and spy on "info"
         const logger = AppContainer.getLogger("RequestLogger");
-        const spy = spyOn(logger, "info");
+        const infoLoggerSpy = spyOn(logger, "info");
+        const helper = new HonoTestHelper();
 
-        // ✅ Mock context
-        const mockContext = {
-            req: {
-                method: "GET",
-                path: "/test",
-            },
-        } as unknown as Context;
+        const { ctx } = helper.createMockContext({
+            method: "GET",
+            path: "/test",
+        });
+        const next = helper.createMockNext();
+        await loggerMiddleware(ctx, next);
 
-        // ✅ Mock async next function
-        const next = async () => {};
-
-        // ✅ Call middleware
-        await loggerMiddleware(mockContext, next);
-
-        // ✅ Validate logs
-        expect(spy).toHaveBeenCalledWith("📥 GET /test");
-        expect(spy).toHaveBeenCalledWith("📤 GET /test - Completed");
-
-        // ✅ Restore spy after test
-        spy.mockRestore();
+        expect(infoLoggerSpy).toHaveBeenCalledWith("📥 GET /test");
+        expect(infoLoggerSpy).toHaveBeenCalledWith("📤 GET /test - Completed");
     });
 });

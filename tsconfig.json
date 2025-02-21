@@ -28,16 +28,20 @@
 
         // JavaScript Handling (Optional)
         "allowJs": false,
-        "baseUrl": "./src",
+        "baseUrl": "./",
         "paths": {
-            "@actions/*": ["actions/*"],
-            "@commands/*": ["commands/*"],
-            "@config/*": ["config/*"],
-            "@services/*": ["services/*"],
-            "@utils/*": ["utils/*"],
-            "@db/*": ["db/*"],
-            "@middleware/*": ["middleware/*"],
-            "@server/*": ["server/*"]
+            "@actions/*": ["src/actions/*"],
+            "@commands/*": ["src/commands/*"],
+            "@config/*": ["src/config/*"],
+            "@db/*": ["src/db/*"],
+            "@jobs/*": ["src/jobs/*"],
+            "@middleware/*": ["src/middleware/*"],
+            "@server/*": ["src/server/*"],
+            "@services/*": ["src/services/*"],
+            "@types/*": ["src/types/*"],
+            "@validation/*": ["src/validation/*"],
+            "@workers/*": ["src/workers/*"],
+            "@test-helpers/*": ["tests/helpers/*"]
         }
     }
 }

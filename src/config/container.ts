@@ -1,19 +1,20 @@
 import "reflect-metadata";
 import { appConfig } from "@config/app";
 import AppContainerModuleClass from "@config/modules/AppContainerModuleClass";
+import { BullMQModule } from "@config/modules/BullMQModule";
 import { DrizzleModuleClass } from "@config/modules/DrizzleModuleClass";
 import { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import actionMap from "@config/modules/actionMap";
 import { CacheClassModule } from "@config/modules/cache";
+import { QueueLogsModel } from "@db/models/QueueLogsModel";
 import { UsersModel } from "@db/models/UsersModel";
+import { HelloJob } from "@jobs/HelloJob";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import Emittery from "emittery";
-import pino, { type Logger } from "pino";
+import pino from "pino";
 import { type DependencyContainer, container } from "tsyringe";
 
-const parentLogger = pino(appConfig.logger);
-const loggerRegistry = new LoggerRegistry(parentLogger);
 const baseContainer: DependencyContainer = container.createChildContainer();
 const actionsContainer: DependencyContainer = baseContainer.createChildContainer();
 
@@ -21,8 +22,9 @@ baseContainer.register("EventManager", {
     useValue: new Emittery(),
 });
 
-baseContainer.register<Logger>("Logger", {
-    useValue: parentLogger,
+const loggerRegistry = new LoggerRegistry(pino(appConfig.logger));
+baseContainer.register<LoggerRegistry>("Loggers", {
+    useValue: loggerRegistry,
 });
 
 baseContainer.register<CacheClassModule>("Cache", {
@@ -46,6 +48,21 @@ baseContainer.register<DrizzleKitConfig>("drizzleKitConfig", {
 baseContainer.register<UsersModel>("UsersModel", {
     useClass: UsersModel,
 });
-const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer, loggerRegistry);
+baseContainer.register<QueueLogsModel>("QueueLogsModel", {
+    useClass: QueueLogsModel,
+});
+baseContainer.register<BullMQModule>("BullMQ", {
+    useFactory: () =>
+        new BullMQModule({
+            logger: loggerRegistry.getLogger("Queue"),
+            redisUrl: appConfig.bullMq.redisUrl,
+            queueNames: [...appConfig.bullMq.queues],
+        }),
+});
+
+baseContainer.register<HelloJob>("HelloJob", {
+    useClass: HelloJob,
+});
+const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer);
 
 export default AppContainer;

@@ -65,7 +65,7 @@ export class HelloCommand extends BaseCommand {
 
         try {
             // Simulate an asynchronous operation.
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 300));
 
             // Capitalize the first letter of the time of day.
             const formattedTime = tod.charAt(0).toUpperCase() + tod.slice(1);

@@ -1,4 +1,6 @@
 import { HelloCommand } from "@commands/HelloCommand";
+import { CookCommandCommand } from "@commands/cook/CookCommandCommand";
+import { CookMiddlewareCommand } from "@commands/cook/CookMiddlewareCommand";
 import { Command } from "commander";
 
 const program = new Command();
@@ -6,6 +8,7 @@ const program = new Command();
 program.name("CindroX-cli").description("CLI tool for the CindroX framework").version("1.0.0");
 
 program.addCommand(new HelloCommand());
-// You can add more command classes similarly
+program.addCommand(new CookCommandCommand());
+program.addCommand(new CookMiddlewareCommand());
 
 program.parse();

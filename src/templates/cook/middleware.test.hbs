@@ -1,0 +1,30 @@
+import { describe, test, expect, beforeEach } from "bun:test";
+import { {{camelCase name}}Middleware } from "@middleware/{{camelCase name}}Middleware";
+import { HonoTestHelper } from "@test-helpers/HonoTestHelper";
+
+describe("{{properCase name}}Middleware", () => {
+let helper: HonoTestHelper;
+
+beforeEach(() => {
+// Initialize a new HonoTestHelper instance before each test.
+helper = new HonoTestHelper();
+});
+
+test("should execute middleware and call next", async () => {
+// Create a mock context using HonoTestHelper.
+const { ctx } = helper.createMockContext();
+
+// Create a mock next function that sets a flag when called.
+let nextCalled = false;
+const next = helper.createMockNext(async () => { nextCalled = true; });
+
+// Execute the middleware.
+await {{camelCase name}}Middleware(ctx, next);
+
+// Assert that the middleware called next().
+expect(nextCalled).toBe(true);
+
+// Optionally add more assertions here based on expected middleware behavior,
+// for example, modifications on ctx or logging output.
+});
+});

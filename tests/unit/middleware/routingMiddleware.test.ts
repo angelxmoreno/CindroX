@@ -1,23 +1,20 @@
 import { describe, expect, it, spyOn } from "bun:test";
 import AppContainer from "@config/container";
 import { routingMiddleware } from "@middleware/routingMiddleware";
-import type { Context } from "hono";
+import { HonoTestHelper } from "@test-helpers/HonoTestHelper";
 import { HTTPException } from "hono/http-exception";
 
 describe("Routing Middleware", () => {
     it("should return 404 when no matching action is found", () => {
         const logger = AppContainer.getLogger("Router");
-        const loggerSpy = spyOn(logger, "warn");
+        const warnLoggerSpy = spyOn(logger, "warn");
+        const helper = new HonoTestHelper();
 
-        const mockContext = {
-            req: {
-                method: "POST",
-                path: "/nonexistent",
-            },
-        } as unknown as Context;
-
-        // ✅ Fix: Remove `await` since it's unnecessary
-        expect(() => routingMiddleware(mockContext)).toThrow(HTTPException);
-        expect(loggerSpy).toHaveBeenCalledWith("! No action found for POST:/nonexistent");
+        const { ctx } = helper.createMockContext({
+            method: "POST",
+            path: "/nonexistent",
+        });
+        expect(() => routingMiddleware(ctx)).toThrow(HTTPException);
+        expect(warnLoggerSpy).toHaveBeenCalledWith("! No action found for POST:/nonexistent");
     });
 });

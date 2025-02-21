@@ -31,10 +31,21 @@ const defaultConfig = {
         port: Number(Bun.env.SERVER_PORT ?? 3001),
     },
     database: databaseConfig,
+    passport: {
+        strategies: {
+            jwt: {
+                secret: Bun.env.JWT_SECRET ?? "secret_key",
+            },
+        },
+    },
     logger: loggerConfig,
     cache: {
         driver: Bun.env.CACHE_DRIVER ?? "memory",
         redisUrl: Bun.env.REDIS_CACHE_URL ?? null,
+    },
+    bullMq: {
+        redisUrl: Bun.env.QUEUE_REDIS_URL ?? "memory",
+        queues: ["helloQueue"],
     },
     mailer: {
         url: Bun.env.MAIL_URL ?? "smtp://localhost:7025",

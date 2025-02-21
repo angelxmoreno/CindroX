@@ -8,7 +8,7 @@ describe("Logger (Pino)", () => {
     let logger: Logger;
 
     beforeEach(() => {
-        logger = AppContainer.resolve("Logger");
+        logger = AppContainer.getLogger("Test");
     });
 
     it("should have basic logging methods", () => {
