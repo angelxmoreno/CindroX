@@ -1,29 +1,22 @@
 import type { DatabaseConfig } from "@config/modules/DrizzleModuleClass";
-import { getEnvValue } from "@utils/getEnvValue";
 import type { LoggerOptions, TransportTargetOptions } from "pino";
 
 const nodeEnv = Bun.env.NODE_ENV ?? "test";
 const isTestEnv = nodeEnv === "test";
 
-const logLevel = getEnvValue<string>(
-    {
-        test: "error",
-        development: "debug",
-    },
-    "info",
-);
-
-const pinoLogFileLevel = Bun.env.LOGGER_FILE_LEVEL ?? null;
-const pinoLogFilePath = Bun.env.LOGGER_FILE_PATH ?? null;
 const pinoTargets: TransportTargetOptions[] = [
     {
         target: "pino-pretty",
         options: { colorize: true },
-        level: logLevel,
+        level: Bun.env.LOGGER_LEVEL ?? "info",
     },
 ];
+
+const pinoLogFileLevel = Bun.env.LOGGER_FILE_LEVEL ?? Bun.env.LOGGER_LEVEL ?? "info";
+const pinoLogFilePath = Bun.env.LOGGER_FILE_PATH ?? null;
+
 if (pinoLogFileLevel && pinoLogFilePath) {
-    pinoTargets.push({ target: "pino/file", options: { destination: pinoLogFilePath }, level: logLevel });
+    pinoTargets.push({ target: "pino/file", options: { destination: pinoLogFilePath }, level: pinoLogFileLevel });
 }
 
 const loggerConfig: LoggerOptions = {
@@ -59,18 +52,11 @@ const defaultConfig = {
         redisUrl: Bun.env.REDIS_CACHE_URL ?? null,
     },
     bullMq: {
-        redisUrl: Bun.env.QUEUE_REDIS_URL ?? "memory",
+        redisUrl: Bun.env.QUEUE_REDIS_URL ?? "redis://redis",
         queues: ["helloQueue"],
     },
     mailer: {
-        url: getEnvValue<string>(
-            {
-                test: "smtp://mailhog:1025",
-                development: Bun.env.MAIL_URL,
-                production: Bun.env.MAIL_URL,
-            },
-            "smtp://localhost:1025",
-        ),
+        url: Bun.env.MAIL_URL ?? "smtp://localhost:1025",
         fromEmail: Bun.env.MAIL_FROM_EMAIL ?? "no-reply@local",
         fromName: Bun.env.MAIL_FROM_NAME ?? "Admin",
     },
