@@ -57,7 +57,7 @@ jobs:
       - name: 🧪 Run Tests with Coverage
         env:
           TEST_DATABASE_URL: "mysql://root:password@127.0.0.1:3306/test_db?charset=utf8mb4"
-          MAIL_URL: smtp://127.0.0.1:1025
+          MAIL_URL: smtp://localhost:1025
           NODE_ENV: test
         run: bun test --coverage --reporter=lcov
 
