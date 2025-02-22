@@ -1,12 +1,17 @@
 import "reflect-metadata";
-import { describe, expect, it } from "bun:test";
+import { afterEach, describe, expect, it } from "bun:test";
+import { appConfig } from "@config/app";
 import { sendEmail } from "@services/mailer";
 import { MailhogClient } from "mailhog-awesome";
 
 describe("Mailer Service", () => {
+    const parts = new URL(appConfig.mailer.url);
     const mailhog = new MailhogClient({
-        host: "mailhog",
+        host: parts.hostname,
         port: 8025,
+    });
+    afterEach(async () => {
+        await mailhog.deleteAllEmails();
     });
     it("should send an email", async () => {
         const uuid = String(Date.now());

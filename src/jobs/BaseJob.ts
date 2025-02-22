@@ -80,5 +80,5 @@ export abstract class BaseJob<DATA extends Record<string, unknown>> {
      *
      * @param job - The job instance containing job data.
      */
-    abstract worker(job: Job<DATA>): Promise<void>;
+    abstract worker(job: Job<DATA>): Promise<unknown>;
 }

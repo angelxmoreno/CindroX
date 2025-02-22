@@ -52,7 +52,7 @@ export class BullMQModule {
         const queuesToCreate = queueNames ?? [];
         // Preload queues from configuration
         for (const queueName of queuesToCreate) {
-            this.createQueue(queueName);
+            this.addQueue(queueName);
         }
     }
 
@@ -63,16 +63,25 @@ export class BullMQModule {
      * @param name - The name of the queue
      * @returns The queue instance
      */
-    protected createQueue(name: string): Queue {
+    protected addQueue(name: string): Queue {
         let queue = this.queueRegistry.get(name);
         if (!queue) {
-            queue = new Queue(name, { connection: this.redisConnection });
+            queue = this.createQueueInstance(name);
             this.queueRegistry.set(name, queue);
             this.logger.info(`New queue ${name} created`);
         } else {
             this.logger.info(`Using existing queue ${name}`);
         }
         return queue;
+    }
+
+    /**
+     * Helper method for easier stubbing
+     *
+     * @param name
+     */
+    createQueueInstance(name: string): Queue {
+        return new Queue(name, { connection: this.redisConnection });
     }
 
     get createdQueueNames(): string[] {
