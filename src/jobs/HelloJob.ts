@@ -15,13 +15,16 @@ export class HelloJob extends BaseJob<HelloJobData> {
         super(bullMQ, loggerRegistry);
     }
 
-    async worker(job: Job<HelloJobData>): Promise<void> {
+    async worker(job: Job<HelloJobData>): Promise<string> {
         try {
             const { name } = job.data;
             if (!name) throw new Error("Missing name in job data");
-            this.logger.info(`Hi ${name}! How are you?`);
+            const greeting = `Hi ${name}! How are you?`;
+            this.logger.info(greeting);
+            return greeting;
         } catch (error) {
             this.logger.error({ jobId: job.id, error }, "Job failed");
+            throw error; // Rethrow original error instead of creating a new one
         }
     }
 }

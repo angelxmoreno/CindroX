@@ -1,5 +1,6 @@
 import type { NodePlopAPI } from "node-plop";
 import { commandGenerator } from "src/plop-generators/commandGenerator";
+import { jobGenerator } from "src/plop-generators/jobGenerator";
 import { lintAction } from "src/plop-generators/lintAction";
 import { middlewareGenerator } from "src/plop-generators/middlewareGenerator";
 
@@ -22,4 +23,5 @@ export default function (plop: NodePlopAPI): void {
     plop.setActionType("lint", lintAction);
     plop.setGenerator("command", commandGenerator);
     plop.setGenerator("middleware", middlewareGenerator);
+    plop.setGenerator("job", jobGenerator);
 }

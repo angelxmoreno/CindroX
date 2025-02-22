@@ -12,6 +12,7 @@ import { HelloJob } from "@jobs/HelloJob";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
 import Emittery from "emittery";
+import nodemailer, { type Transporter } from "nodemailer";
 import pino from "pino";
 import { type DependencyContainer, container } from "tsyringe";
 
@@ -62,6 +63,17 @@ baseContainer.register<BullMQModule>("BullMQ", {
 
 baseContainer.register<HelloJob>("HelloJob", {
     useClass: HelloJob,
+});
+
+const mailTransport = nodemailer.createTransport(appConfig.mailer.url);
+// top level awaits break Drizzle migrations
+mailTransport.verify((error) => {
+    if (error) {
+        loggerRegistry.getLogger("app").fatal(`Unable to use mail transport settings: ${appConfig.mailer.url}`);
+    }
+});
+baseContainer.register<Transporter>("MailTransport", {
+    useValue: mailTransport,
 });
 const AppContainer = new AppContainerModuleClass(baseContainer, actionsContainer);
 

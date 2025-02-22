@@ -10,11 +10,11 @@ import nodePlop from "node-plop";
  *
  * - spinnerStartText: Text displayed when the spinner starts.
  * - spinnerSuccessText: Text displayed when the generation is successful.
- * - spinnerFailText: Text displayed when generation fails.
+ * - spinnerFailText: Text displayed if generation fails.
  * - generatorName: The name of the Plop generator to run.
  *
- * The handleAction() method loads the plop file (from a configured path), retrieves the
- * appropriate generator, runs its actions with the provided name, and logs the results.
+ * The handleAction() method loads the Plop file (assumed to be written in TypeScript and located under plop-generators),
+ * retrieves the appropriate generator, runs its actions with the provided parameters, and logs the results.
  */
 export abstract class BaseCookCommand extends BaseCommand {
     // Text to display when starting the spinner.
@@ -27,24 +27,41 @@ export abstract class BaseCookCommand extends BaseCommand {
     protected abstract generatorName: string;
 
     /**
+     * Subclasses can override this method to provide additional generator data.
+     *
+     * @param name - The name entered by the user.
+     * @param options - Additional CLI options (subclass-defined).
+     * @returns An object containing the generator input data.
+     */
+    protected getGeneratorData(name: string, options: Record<string, unknown> = {}): Record<string, unknown> {
+        // By default, return the name along with any additional options.
+        return { name, ...options };
+    }
+
+    /**
      * Executes the cook command action.
      *
      * Loads the Plop file (assumed to be written in TypeScript and located under plop-generators),
      * retrieves the generator specified by `this.generatorName`, runs its actions with the provided
-     * name, and logs the results. In case of any failures, an error is logged.
+     * name and options, and logs the results.
      *
      * @param name - The name to pass to the generator actions.
+     * @param options - Additional CLI options (subclass-defined).
      */
-    public async handleAction(name: string): Promise<void> {
+    public async handleAction(name: string, options: Record<string, unknown> = {}): Promise<void> {
+        // Start a spinner to indicate progress.
         const spinner = this.getSpinner(this.spinnerStartText).start();
         try {
-            // Construct the path to the plop file.
+            // Build the path to the plop file.
             const plopFilePath = path.join(__dirname, "..", "plop-generators", "index.ts");
+            // Load the plop instance using the specified plop file.
             const plop = await nodePlop(plopFilePath);
-            // Retrieve the generator using the abstract generatorName.
+            // Retrieve the generator by name.
             const generator = plop.getGenerator(this.generatorName);
-            // Run the generator's actions with the provided name.
-            const results = await generator.runActions({ name });
+            // Get the generator data (including additional CLI options).
+            const generatorData = this.getGeneratorData(name, options);
+            // Execute the generator actions.
+            const results = await generator.runActions(generatorData);
             // If any failures occurred during generation, throw an error.
             if (results.failures.length > 0) {
                 throw new Error(results.failures[0].error);
@@ -54,7 +71,9 @@ export abstract class BaseCookCommand extends BaseCommand {
             // Log detailed generation results.
             this.logSuccess("Generation results:");
             for (const change of results.changes) {
-                this.logSuccess(`${change.type}: ${change.path}`);
+                if (change.type !== "function") {
+                    this.logSuccess(`${change.type}: ${change.path}`);
+                }
             }
         } catch (error) {
             // Signal failure via the spinner and log the error.

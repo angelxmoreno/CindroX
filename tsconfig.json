@@ -37,7 +37,9 @@
             "@jobs/*": ["src/jobs/*"],
             "@middleware/*": ["src/middleware/*"],
             "@server/*": ["src/server/*"],
+            "@services/*": ["src/services/*"],
             "@types/*": ["src/types/*"],
+            "@utils/*": ["src/utils/*"],
             "@validation/*": ["src/validation/*"],
             "@workers/*": ["src/workers/*"],
             "@test-helpers/*": ["tests/helpers/*"]

@@ -1,9 +1,11 @@
+import AppContainer from "@config/container";
 import { input, select } from "@inquirer/prompts";
 // @ts-ignore
 import type { InputConfig, SelectConfig } from "@types/inquirer-prompts";
 import chalk from "chalk";
 import { Command } from "commander";
 import ora, { type Options as OraOptions, type Ora } from "ora";
+import type { Logger } from "pino";
 
 /**
  * BaseCommand provides default configuration for CLI commands.
@@ -31,6 +33,12 @@ export abstract class BaseCommand extends Command {
     protected abstract commandDescription: string;
     protected abstract commandArgument: string;
     protected abstract argumentDescription: string;
+    protected logger: Logger;
+
+    constructor() {
+        super();
+        this.logger = AppContainer.getLogger("CLI");
+    }
 
     /**
      * Abstract method that subclasses must implement to define the command's behavior.
@@ -96,9 +104,9 @@ export abstract class BaseCommand extends Command {
      */
     public logSuccess(msg: string, data?: unknown): void {
         if (data) {
-            console.log(chalk.green(msg), data);
+            this.logger.info(chalk.green(msg), data);
         } else {
-            console.log(chalk.green(msg));
+            this.logger.info(chalk.green(msg));
         }
     }
 
@@ -113,9 +121,9 @@ export abstract class BaseCommand extends Command {
         if (!message) {
             message = "Unknown Error";
         }
-        console.error(message);
+        this.logger.error(message);
         if (verbose) {
-            console.error(error);
+            this.logger.error(error);
         }
     }
 }

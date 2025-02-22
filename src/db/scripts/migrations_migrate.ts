@@ -1,5 +1,4 @@
 import process from "node:process";
-// src/db/scripts/migrations_migrate.ts
 import { DrizzleCli } from "./DrizzleCli";
 
 async function main() {

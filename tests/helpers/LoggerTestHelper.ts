@@ -1,7 +1,13 @@
 import { mock } from "bun:test";
+import { LoggerRegistry } from "@config/modules/LoggerRegistry";
 import type { Logger } from "pino";
 
 export class LoggerTestHelper {
+    static createMockLoggerRegistry(): LoggerRegistry {
+        const { logger } = this.createMockLogger();
+        return new LoggerRegistry(logger);
+    }
+
     static createMockLogger(): {
         logger: Logger;
         infoLoggerMock: Logger["info"];
@@ -19,6 +25,7 @@ export class LoggerTestHelper {
             warn: warnLoggerMock,
             error: errorLoggerMock,
             debug: debugLoggerMock,
+            child: () => this.createMockLogger().logger,
         } as unknown as Logger;
         return { logger, infoLoggerMock, warnLoggerMock, errorLoggerMock, debugLoggerMock };
     }

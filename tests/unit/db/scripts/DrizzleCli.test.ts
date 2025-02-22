@@ -22,7 +22,6 @@ describe("DrizzleCli", () => {
 
     test("DrizzleCli.migrationsGenerateCommand builds and executes the correct command", async () => {
         const { logger } = LoggerTestHelper.createMockLogger();
-        console.log({ logger });
         const cli = new DrizzleCli(dummyConfig, logger);
         const migrationName = "test_migration";
 

@@ -32,7 +32,7 @@ export const lintAction: CustomActionFunction = async ({ name }, { path }, { ren
             if (error) {
                 reject(`Linting failed: ${stderr || error.message}`);
             } else {
-                resolve(`Linting successful: ${stdout}`);
+                resolve(`Linting successful: ${stdout.trim()}`);
             }
         });
     });

@@ -1,0 +1,47 @@
+import type { BullMQModule } from "@config/modules/BullMQModule";
+import type { LoggerRegistry } from "@config/modules/LoggerRegistry";
+import { BaseJob } from "@jobs/BaseJob";
+import type { Job } from "bullmq";
+import { inject, injectable } from "tsyringe";
+
+/**
+* Type definition for the data structure this job will process.
+*/
+export type {{properCase name}}JobData = Record<string, unknown>;
+
+@injectable()
+export class {{properCase name}}Job extends BaseJob<{{properCase name}}JobData> {
+    protected queueName = "{{queueName}}";
+    protected jobName = "{{properCase name}}Worker";
+
+    /**
+    * Constructs the job with dependencies injected via tsyringe.
+    *
+    * @param bullMQ - The BullMQ module instance.
+    * @param loggerRegistry - The logger registry instance.
+    */
+    constructor(@inject("BullMQ") bullMQ: BullMQModule, @inject("Loggers") loggerRegistry: LoggerRegistry) {
+    super(bullMQ, loggerRegistry);
+    }
+
+    /**
+    * Worker function that processes jobs from the queue.
+    *
+    * @param job - The job instance containing job data.
+    * @returns A string message indicating the processing result.
+    */
+    async worker(job: Job<{{properCase name}}JobData>): Promise<string> {
+        try {
+        // Extract data fields (modify as needed)
+        const { name } = job.data;
+        if (!name) throw new Error("Missing name in job data");
+
+        const resultMessage = `Processing {{properCase name}}Job for ${name}`;
+        this.logger.info(resultMessage);
+        return resultMessage;
+        } catch (error) {
+        this.logger.error({ jobId: job.id, error }, "Job failed");
+        throw new Error("Job failed");
+        }
+        }
+        }

@@ -1,0 +1,8 @@
+import AppContainer from "@config/container";
+import type { {{properCase name}}JobData } from "@jobs/{{properCase name}}Job";
+import type { Job } from "bullmq";
+
+const bullMQ = AppContainer.resolve("BullMQ");
+
+const jobClass = AppContainer.resolve("{{properCase name}}Job");
+bullMQ.createWorker("{{queueName}}", async (job: Job<{{properCase name}}JobData>) => jobClass.worker(job));
