@@ -66,9 +66,11 @@ baseContainer.register<HelloJob>("HelloJob", {
 });
 
 const mailTransport = nodemailer.createTransport(appConfig.mailer.url);
-mailTransport.verify((error) => {
+await mailTransport.verify().catch((error) => {
     if (error) {
-        loggerRegistry.getLogger("app").fatal(`Unable to use mail transport settings: ${appConfig.mailer.url}`);
+        const logger = loggerRegistry.getLogger("app");
+        logger.fatal(`Unable to use mail transport settings: ${appConfig.mailer.url}`);
+        throw error;
     }
 });
 baseContainer.register<Transporter>("MailTransport", {
