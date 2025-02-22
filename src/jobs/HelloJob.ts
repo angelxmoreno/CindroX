@@ -24,7 +24,7 @@ export class HelloJob extends BaseJob<HelloJobData> {
             return greeting;
         } catch (error) {
             this.logger.error({ jobId: job.id, error }, "Job failed");
-            throw new Error("Job failed");
+            throw error; // Rethrow original error instead of creating a new one
         }
     }
 }

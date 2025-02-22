@@ -96,7 +96,7 @@ export class BullMQModule {
      * @param concurrency - The maximum number of concurrent jobs the worker can process
      * @returns The created Worker instance
      */
-    createWorker(name: string, processor: (job: Job) => Promise<void>, concurrency = 5): Worker {
+    createWorker(name: string, processor: (job: Job) => Promise<unknown>, concurrency = 5): Worker {
         const worker = new Worker(name, processor, {
             connection: this.redisConnection,
             concurrency,

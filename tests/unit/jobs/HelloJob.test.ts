@@ -1,11 +1,9 @@
 import { describe, expect, it } from "bun:test";
-import { appConfig } from "@config/app";
 import { HelloJob, type HelloJobData } from "@jobs/HelloJob";
 import { BullMQTestHelper } from "@test-helpers/BullMQTestHelper";
 import { LoggerTestHelper } from "@test-helpers/LoggerTestHelper";
 import type { Job } from "bullmq";
 
-console.dir(appConfig);
 describe("HelloJob", () => {
     const jobQueueName = "helloQueue";
     const jobWorkerName = "helloWorker";
