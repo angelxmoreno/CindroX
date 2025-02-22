@@ -44,6 +44,9 @@ jobs:
       - name: 📦 Install Dependencies
         run: bun install
 
+      - name: 🎯 Run Linting (Biome)
+        run: bun run lint
+
       - name: Wait for MySQL
         run: |
           until mysql --host=127.0.0.1 --user=root --password=password --database=test_db -e "SELECT 1" ; do
@@ -51,8 +54,11 @@ jobs:
             sleep 3
           done
 
-      - name: 🎯 Run Linting (Biome)
-        run: bun run lint
+      - name: 🚀 Run Migrations
+        env:
+          TEST_DATABASE_URL: "mysql://root:password@127.0.0.1:3306/test_db?charset=utf8mb4"
+          DATABASE_URL: "mysql://root:password@127.0.0.1:3306/test_db?charset=utf8mb4"
+        run: bun migrate
 
       - name: 🧪 Run Tests with Coverage
         env:

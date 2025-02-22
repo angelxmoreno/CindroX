@@ -66,11 +66,10 @@ baseContainer.register<HelloJob>("HelloJob", {
 });
 
 const mailTransport = nodemailer.createTransport(appConfig.mailer.url);
-await mailTransport.verify().catch((error) => {
+// top level awaits break Drizzle migrations
+mailTransport.verify((error) => {
     if (error) {
-        const logger = loggerRegistry.getLogger("app");
-        logger.fatal(`Unable to use mail transport settings: ${appConfig.mailer.url}`);
-        throw error;
+        loggerRegistry.getLogger("app").fatal(`Unable to use mail transport settings: ${appConfig.mailer.url}`);
     }
 });
 baseContainer.register<Transporter>("MailTransport", {
