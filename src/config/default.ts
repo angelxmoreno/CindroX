@@ -1,4 +1,7 @@
+import path from "node:path";
 import type { DatabaseConfig } from "@config/modules/DrizzleModuleClass";
+import type { EmailConfig } from "email-templates";
+import type { Address } from "nodemailer/lib/mailer";
 import type { LoggerOptions, TransportTargetOptions } from "pino";
 
 const nodeEnv = Bun.env.NODE_ENV ?? "test";
@@ -32,6 +35,32 @@ const databaseConfig: DatabaseConfig = {
     timezone: Bun.env.DATABASE_TIMEZONE ?? "UTC",
 };
 
+type MailSettings = {
+    transportUrl: string;
+    from: Address;
+    templatesConfig: EmailConfig;
+};
+const emailTemplateOptions: MailSettings = {
+    transportUrl: Bun.env.MAIL_URL ?? "smtp://localhost:1025",
+    from: {
+        name: Bun.env.MAIL_FROM_NAME ?? "Admin",
+        address: Bun.env.MAIL_FROM_EMAIL ?? "no-reply@local",
+    },
+    templatesConfig: {
+        views: {
+            root: path.resolve("src/templates/emails"),
+            options: {
+                extension: "hbs",
+            },
+        },
+        send: true,
+        juice: true, // Auto-inline styles
+        juiceResources: {
+            preserveImportant: true,
+        },
+    },
+};
+
 const defaultConfig = {
     app: {
         name: Bun.env.APP_NAME ?? "sample app",
@@ -53,13 +82,16 @@ const defaultConfig = {
     },
     bullMq: {
         redisUrl: Bun.env.QUEUE_REDIS_URL ?? "redis://redis",
-        queues: ["helloQueue"],
+        queues: ["helloQueue", "mailQueue"],
     },
+
+    //@deprecated
     mailer: {
         url: Bun.env.MAIL_URL ?? "smtp://localhost:1025",
         fromEmail: Bun.env.MAIL_FROM_EMAIL ?? "no-reply@local",
         fromName: Bun.env.MAIL_FROM_NAME ?? "Admin",
     },
+    emailTemplate: emailTemplateOptions,
 } as const;
 
 export type AppConfig = typeof defaultConfig;
