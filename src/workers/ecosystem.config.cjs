@@ -8,6 +8,15 @@ const common = {
 const pmConfig = {
     apps: [
         {
+            name: "UserMailWorker",
+            script: "src/workers/UserMailWorker.ts",
+            // instances: 2,
+            // exec_mode: "cluster", // does not work with custom interpreter
+            out_file: "logs/workers/userMailWorker.log",
+            error_file: "logs/workers/userMailWorker-errors.log",
+            ...common,
+        },
+        {
             name: "HelloWorker",
             script: "src/workers/HelloWorker.ts",
             instances: 2, // Spawns 2 separate processes

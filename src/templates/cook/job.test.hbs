@@ -1,11 +1,8 @@
 import { describe, expect, it } from "bun:test";
-import { appConfig } from "@config/app";
 import { {{properCase name}}Job, type {{properCase name}}JobData } from "@jobs/{{properCase name}}Job";
 import { BullMQTestHelper } from "@test-helpers/BullMQTestHelper";
 import { LoggerTestHelper } from "@test-helpers/LoggerTestHelper";
 import type { Job } from "bullmq";
-
-console.dir(appConfig);
 
 describe("{{properCase name}}Job", () => {
 const jobQueueName = "{{queueName}}";
