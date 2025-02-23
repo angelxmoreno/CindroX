@@ -55,6 +55,8 @@ Our current **priority order** for remaining integrations:
 14. explain how to protect routes, the login. register and identity actions
 15. explain how to add new jobs, workers and queues
 16. explain pm2 docker service
+17. explain email templates and how to add new ones
+17. explain UserMailJob and how to add new queue functions
 ---
 
 
