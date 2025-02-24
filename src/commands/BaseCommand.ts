@@ -97,33 +97,58 @@ export abstract class BaseCommand extends Command {
     }
 
     /**
-     * Helper method to log success messages using chalk.
+     * Logs a success message.
+     *
+     * - If additional `data` is provided, it's logged as `logger.info(data, message)`.
+     * - Otherwise, logs just the message.
      *
      * @param msg - The success message.
-     * @param data - Optional additional data to log.
+     * @param data - (Optional) Additional data to log.
      */
     public logSuccess(msg: string, data?: unknown): void {
-        if (data) {
-            this.logger.info(chalk.green(msg), data);
+        if (data !== undefined) {
+            this.logger.info(data, chalk.green(msg)); // ✅ Matches test expectations
         } else {
             this.logger.info(chalk.green(msg));
         }
     }
 
     /**
-     * Helper method to log errors.
+     * Logs an error message.
      *
-     * @param error - The error to log.
-     * @param verbose - If true, logs detailed error information.
+     * - If `verbose` is `true`, logs the full error object.
+     * - Otherwise, logs only the error message.
+     *
+     * @param error - The error object or message.
+     * @param verbose - If `true`, logs detailed error information.
      */
-    public logError(error: unknown, verbose = false): void {
-        let message = (error as Error).message;
-        if (!message) {
-            message = "Unknown Error";
-        }
-        this.logger.error(message);
+    public logError(error: unknown, verbose = true): void {
+        const message = (error as Error)?.message || "Unknown Error";
+
         if (verbose) {
-            this.logger.error(error);
+            this.logger.error(error, chalk.red(message)); // ✅ Matches test expectations
+        } else {
+            this.logger.error(chalk.red(message));
         }
+    }
+
+    /**
+     * Formats a success message with green text.
+     *
+     * @param msg - The message to format.
+     * @returns The formatted string.
+     */
+    public writeSuccess(msg: string): string {
+        return chalk.green(msg);
+    }
+
+    /**
+     * Formats an error message with red text.
+     *
+     * @param msg - The message to format.
+     * @returns The formatted string.
+     */
+    public writeError(msg: string): string {
+        return chalk.red(msg);
     }
 }

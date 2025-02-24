@@ -39,6 +39,7 @@ type MailSettings = {
     transportUrl: string;
     from: Address;
     templatesConfig: EmailConfig;
+    templateNames: readonly string[];
 };
 const emailTemplateOptions: MailSettings = {
     transportUrl: Bun.env.MAIL_URL ?? "smtp://localhost:1025",
@@ -46,6 +47,7 @@ const emailTemplateOptions: MailSettings = {
         name: Bun.env.MAIL_FROM_NAME ?? "Admin",
         address: Bun.env.MAIL_FROM_EMAIL ?? "no-reply@local",
     },
+    templateNames: ["new-user"],
     templatesConfig: {
         views: {
             root: path.resolve("src/templates/emails"),

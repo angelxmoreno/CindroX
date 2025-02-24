@@ -1,4 +1,5 @@
 import { describe, expect, it, mock, spyOn } from "bun:test";
+import { appConfig } from "@config/app";
 import { EmailTemplateService } from "@services/EmailTemplateService";
 import { LoggerTestHelper } from "@test-helpers/LoggerTestHelper";
 import EmailTemplates, { type EmailOptions } from "email-templates";
@@ -75,5 +76,16 @@ describe("EmailTemplateService", () => {
         emailTemplatesSendFn.mockRejectedValue(new Error(errorMessage));
 
         expect(emailService.sendEmail(template, "invalid@example.com", locals)).rejects.toThrow(errorMessage);
+    });
+
+    it("should determine if a template is valid", () => {
+        const [validName] = appConfig.emailTemplate.templateNames;
+        const inValidName = "invalidTemplate";
+
+        expect(EmailTemplateService.isValidTemplateName(inValidName)).toBeFalse();
+        expect(EmailTemplateService.isValidTemplateName(validName)).toBeTrue();
+
+        expect(() => EmailTemplateService.assertValidTemplateName(inValidName)).toThrow();
+        expect(() => EmailTemplateService.assertValidTemplateName(validName)).not.toThrow();
     });
 });
