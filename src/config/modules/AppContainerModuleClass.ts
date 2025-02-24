@@ -6,14 +6,18 @@ import type { CacheClassModule } from "@config/modules/cache";
 import type { QueueLogsModel } from "@db/models/QueueLogsModel";
 import type { UsersModel } from "@db/models/UsersModel";
 import type { HelloJob } from "@jobs/HelloJob";
+import type { UserMailJob } from "@jobs/UserMailJob";
+import type { EmailTemplateService } from "@services/EmailTemplateService";
 import type { Config as DrizzleKitConfig } from "drizzle-kit";
 import type { MySql2Database } from "drizzle-orm/mysql2/driver";
+import type EmailTemplates from "email-templates";
 import type Emittery from "emittery";
 import type { Transporter } from "nodemailer";
 import type { Logger } from "pino";
 import type { DependencyContainer } from "tsyringe";
 
 interface AppDependencies {
+    UserMailJob: UserMailJob;
     EventManager: Emittery;
     Cache: CacheClassModule;
     BullMQ: BullMQModule;
@@ -25,6 +29,8 @@ interface AppDependencies {
     Loggers: LoggerRegistry;
     HelloJob: HelloJob;
     MailTransport: Transporter;
+    EmailTemplates: EmailTemplates;
+    EmailTemplateService: EmailTemplateService;
 }
 
 class AppContainerModuleClass {
