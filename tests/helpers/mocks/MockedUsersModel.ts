@@ -30,7 +30,7 @@ for (const row of data) {
     table.set(row.id, row);
 }
 
-const nextId = (): number => Math.max(...table.keys());
+const nextId = (): number => Math.max(...table.keys()) + 1;
 
 const findById = mock(async (id: number): Promise<SelectUser | null> => {
     const result = table.get(id);
